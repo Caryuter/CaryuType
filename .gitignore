@@ -1,0 +1,10 @@
+
+#Dependencias de npm
+node_modules/
+
+#Configuracion de dependencias
+package.json
+package-lock.json
+
+#Configuracion de ESLint
+eslint.config.mjs

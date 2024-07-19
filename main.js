@@ -12,7 +12,6 @@ const randomWords = [
 let wordsNum =20;
 
 const $challengeSection = document.querySelector("#type_challenge") 
-const $statsSection = document.querySelector("#stats")
 const $header = document.querySelector("body>header")
 const $footer = document.querySelector("body>footer")
 const $input = document.querySelector("input")
@@ -22,7 +21,6 @@ const $counter = document.querySelector(".counter")
 
 let settingsJson = {};
 let gameSarted = false
-let gameAfk = false
 let gameFinished = false
 let timer;
 let timerCount = 0;
@@ -42,7 +40,6 @@ function randWord() {
 function initPage(){
 // TAGS ===========================
 
-  //TODO: drag elements to the next children and making everything out of the boundary counds so you got exhausted
   document.querySelectorAll('button, a').forEach(button => {
     if ((button.querySelector('i') && button.textContent.trim().length > 0) || (button.closest(".options") != null && button.querySelector("i") == null && button.children.length === 0)) {
 
@@ -134,7 +131,7 @@ function initPage(){
           }
         })
 
-        Promise.all(promises).then((value) => {
+        Promise.all(promises).then(() => {
           allOptionButtons.forEach(el => el.removeAttribute("disabled"))
         })
       }
@@ -238,7 +235,7 @@ function initPage(){
    * 
    * @param {KeyboardEvent} key 
    */
-  function onKeyUp(key){
+  function onKeyUp(){
     let textInput = $input.value.split("")
     let $activeWord = $para.querySelector("word.active")
     let $letters = $activeWord.querySelectorAll("letter")
@@ -372,7 +369,7 @@ function initGame(){
     for (let index = 0; index < wordsNum; index++) {
       text.push(randWord())
     }
-    currentText = text.map((word) => {
+    const currentText = text.map((word) => {
       let wordletters = word.split("")
       return word = 
       `<word>${wordletters.map((letter) => {
