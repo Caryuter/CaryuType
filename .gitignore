@@ -1,10 +1,9 @@
 
-#Dependencias de npm
+#Dependencias de Node
 node_modules/
 
-#Configuracion de dependencias
-package.json
-package-lock.json
+#Workspace config
+.vscode
 
-#Configuracion de ESLint
-eslint.config.mjs
+#git repository
+.git
