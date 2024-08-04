@@ -1,6 +1,6 @@
 export {resetActiveMode, generateNewMenuStates, onClickMenu}
 import { onClickMenuButton, disableAllButtons, enableAllButtons } from "./menuButton.js"
-import { expandElement, collapseElement } from "../util/transitions.js"
+import { beginTransition } from "../util/transitions.js"
 import { initGame } from "../components/typeChallenge.js"
 
 
@@ -43,14 +43,14 @@ function transitionOnToggleMenu(newStates){
   let promises = []
   document.querySelector(".options").querySelectorAll("menu").forEach((menu, index)=> {
       if(newStates[index]){
-        promises.push(expandElement(menu))
+        const delay = getComputedStyle(menu).transitionDuration.split(",")[0]
+        promises.push(beginTransition(menu,"collapse",{"delay": delay}))
       } else {
-        promises.push(collapseElement(menu, 0))
+        promises.push(beginTransition(menu,"collapse",{"desiredWidth": 0}))
       }
-    
   })
 
-  Promise.all(promises).then(enableAllButtons)
+  Promise.all(promises).then(enableAllButtons())
 }
 
 /**

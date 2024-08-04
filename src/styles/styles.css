@@ -287,6 +287,7 @@ main {
         padding: 1.5rem 3rem;
         transition: opacity .2s ease-in-out;
         opacity: 0;
+        
 
         &>div{
             width: 100%;
