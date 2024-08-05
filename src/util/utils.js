@@ -1,4 +1,4 @@
-export {isInDOM, arraysAreIdentical, removeFirstOccurrence, cloneArray}
+export {isInDOM, arraysAreIdentical, removeFirstOccurrence, cloneArray, cloneObject}
 
 /**
  * Checks if the passed value is an Element or Node in DOM
@@ -47,4 +47,14 @@ function removeFirstOccurrence(array, word) {
  */
 function cloneArray(arr){
     return [].concat(arr)
+}
+
+
+/**
+ * Shallow copies an object **(nested objects are copied as references)**
+ * @param {Object} obj 
+ * @returns {Object} a new Object with same values but different references
+ */
+function cloneObject(obj){
+    return Object.assign({}, obj)
 }
