@@ -194,7 +194,9 @@ function waitForTransitions(el, properties){
  * @param {String} property - css property to remove 
  */
 function removeTransitionProperty(el, property){
-  let transitions =  el.style.transition.split(",").map((transition) => transition.trim())
+  console.log(el.style.transition);
+  let transitions  = el.style.transition.match(/(((cubic-bezier\(.+?\))|(\w+[-.]?)+)\s?)+/g).map(s => s.trim()) //Prevent cubic-brezier to break code
+  console.log(transitions);
   let updatedTransitions = removeFirstOccurrence(transitions,property)
   if(arraysAreIdentical(transitions, updatedTransitions)) {
     console.warn(`can't remove ${property} transition on ${el.tagName}: ${el.classList.item(0)}`)
@@ -240,7 +242,6 @@ function addTransition(el, properties, options = {}) {
   } else {
     el.style.transition = newTransitions.join(", ");
   }
-  console.log(el.style.transition);
 }
 
 /**
@@ -269,10 +270,10 @@ function getAutoDimensions(el){
  */
 function applyDefaultOptions(el, property, options){
   let optionsCopy = cloneObject(options)
-  let prop = getComputedStyle(el).transitionProperty.split(",").map(s => s.trim())
+
   if(!options.disableCSS){
+    let prop = getComputedStyle(el).transitionProperty.split(",").map(s => s.trim())
     let index = prop.findIndex(s => s == property || s == "all")
-    console.log(prop,index,property);
     if(index == -1){
       console.warn("can't apply default styles to a property that doesn't exists on element")
       return optionsCopy
@@ -284,16 +285,21 @@ function applyDefaultOptions(el, property, options){
     //get property for transition type index and re-destructure it
     [transitionProperty, transitionDuration, transitionTimingFunction, transitionDelay] = transitionproperties.map(
       (val) => {
+        if(val == transitionTimingFunction){
+          let timingFunctions = val.match(/(cubic-bezier\(.*\))|(\w+-?)+/g) //Prevent commas in cubic brezier to brake code
+          return timingFunctions[index]
+        }
         return val.split(",").map(s => s.trim())[index]
     })
-    console.log(transitionTimingFunction);
-    const numberRegex = /[\d.]+/
 
+    const numberRegex = /[\d.]+/
     //Check if value isn't configured and if number is greater than 0
     if(!optionsCopy.duration && transitionDuration.match(numberRegex)[0] > 0) optionsCopy.duration = transitionDuration
     if(!optionsCopy.timingFunction) optionsCopy.timingFunction = transitionTimingFunction
     if(!optionsCopy.delay && transitionDelay.match(numberRegex)[0] > 0) optionsCopy.delay = transitionDelay
   }
+
+  //Default styles if CSS support is disabled
   if(!optionsCopy.timingFunction) optionsCopy.timingFunction = "ease"
   if(!optionsCopy.duration) optionsCopy.duration = "0.4s"
 
