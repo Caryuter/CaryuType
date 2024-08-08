@@ -4,6 +4,19 @@ import { arraysAreIdentical, cloneObject, isInDOM, removeFirstOccurrence } from 
 
 
 /**
+ * @typedef Options
+ * @type {Object}
+ * @property {String} duration - Duration of the transition **must declare units**
+ * @property {"ease"|"ease-in"|"ease-out"|"ease-in-out"|"linear"} timingFunction - Timing function for the transition
+ * @property {String} delay - Delay before the transition starts **must declare units**
+ * @property {Number} xPos - x position for move transition
+ * @property {Number} yPos - y position for move transition
+ * @property {Number} desiredWidth - Desired width for collapse or expand transition in pixels
+ * @property {Number} desiredOpacity - Desired opacity for opacity transitions in range between 0 and 1
+ * @property {Function} callback - Callback function for hide transition
+ * @property {Boolean} disableCSS - if checked disables default computed styles, defaults to *false*
+ */
+/**
  * Handles different types of transitions based on the provided options. 
  * By default if no neecesary option is provided it searches in computed styles;
  * it can be disabled with `disableCSS` option
@@ -12,23 +25,21 @@ import { arraysAreIdentical, cloneObject, isInDOM, removeFirstOccurrence } from 
  * it defaults to **1s** and  **ease** respectively
  * @param {HTMLElement} el - The element to be animated
  * @param {"collapse"|"expand"|"move"|"hide-and-do"|"opacity"} type - Type of transition 
- * @param {Object} options - Options for the transition
- * @param {String} [options.duration] - Duration of the transition **must declare units**
- * @param {"ease"|"ease-in"|"ease-out"|"ease-in-out"|"linear"} [options.timingFunction] - Timing function for the transition
- * @param {String} [options.delay] - Delay before the transition starts **must declare units**
- * @param {Number} [options.xPos] - x position for move transition
- * @param {Number} [options.yPos] - y position for move transition
- * @param {Number} [options.desiredWidth] - Desired width for collapse or expand transition in pixels
- * @param {Number} [options.desiredOpacity] - Desired opacity for opacity transitions in range between 0 and 1
- * @param {Function} [options.callback] - Callback function for hide transition
+ * @param {Options} options - Options for the transition
  * @param {Boolean} disableCSS - if checked disables default computed styles, defaults to *false*
  * @returns {Promise} A promise that resolves when the transition ends
  */
 function beginTransition(el,type, options, disableCSS = false) {
-
   if(!isInDOM(el)){
     return Promise.reject(new Error(`Passed value for transition ${this} isn't an element`))
   }
+  console.log(
+    {
+      "Transitioning element": el,
+      "Type of transition": type,
+      "options": options
+    }
+  );
   options.disableCSS = disableCSS
   switch (type) {
     case 'collapse':
@@ -50,7 +61,7 @@ function beginTransition(el,type, options, disableCSS = false) {
 /**
  * Collapses an element with auto width to a desired width
  * @param {HTMLElement} el The element to collapse
- * @param {Object} options - options object
+ * @param {Options} options - options for transition
  * @returns {Promise} promise resolving when transition ends
  */
 function collapseElement(el, options){
@@ -80,11 +91,10 @@ function collapseElement(el, options){
   })
 }
 
-//TODO: Doesn't expands element
 /**
  * Expands an element to its auto width
  * @param {HTMLElement} el The element to expand
- * @param {Object} options - options object
+ * @param {Options} options - options for transition
  * @return {Promise} promise resolving when transition ends
  */
 function expandElement(el, options){
@@ -110,7 +120,7 @@ function expandElement(el, options){
 /**
  * Moves an absolute element to the desired absolute position
  * @param {HTMLElement} el - Element to move 
- * @param {Object} options - options
+ * @param {Options} options - options for transition
  * @returns {Promise} A promise that resolves when transition ends
  */
 function moveAbsoluteElement(el, options){
@@ -131,15 +141,23 @@ function moveAbsoluteElement(el, options){
 /**
  * Hides an element and executes a callback while it's not visible, after that element will be visible again 
  * @param {HTMLElement} el - Element to be hided
- * @param {Object} options - options
+ * @param {Options} options - options for transition
  * @returns {Promise} a promise that resolves when element is visible again
  */
 function hideAndDo(el, options){
+  
   if(!options.callback) return Promise.reject(new Error("No callback passed por element: " + el.classList))
   options.desiredOpacity = 0
+  
 
   return transitOpacity(el, options)
-  .then(() => Promise.resolve(options.callback()))
+  .then(() => {
+    try {
+      Promise.resolve(options.callback())
+    }catch(e){
+      console.error(e.stack);
+    }
+  })
   .then(() => {
     options.desiredOpacity = 1
     transitOpacity(el, options)
@@ -149,7 +167,7 @@ function hideAndDo(el, options){
 /**
  * Transitions an element to the desired opacity
  * @param {HTMLElement} el - Element to be transitioned
- * @param {Object} options - options
+ * @param {Options} options - options for transition
  * @return {Promise} a promise that resolves when transition ends
  */
 function transitOpacity(el, options = {}){
@@ -187,16 +205,13 @@ function waitForTransitions(el, properties){
   })
 }
 
-//TODO: Doesn't work properly
 /**
  * Removes only the transition property from the specified element 
  * @param {HTMLElement} el - element to be removed the property from 
  * @param {String} property - css property to remove 
  */
 function removeTransitionProperty(el, property){
-  console.log(el.style.transition);
   let transitions  = el.style.transition.match(/(((cubic-bezier\(.+?\))|(\w+[-.]?)+)\s?)+/g).map(s => s.trim()) //Prevent cubic-brezier to break code
-  console.log(transitions);
   let updatedTransitions = removeFirstOccurrence(transitions,property)
   if(arraysAreIdentical(transitions, updatedTransitions)) {
     console.warn(`can't remove ${property} transition on ${el.tagName}: ${el.classList.item(0)}`)
@@ -206,10 +221,10 @@ function removeTransitionProperty(el, property){
 }
 
 /**
- * Adds a transition to an element without removing existing ones
+ * Adds a transition inline style to an element with specified options
  * @param {HTMLElement} el - The element to which the transition will be added
- * @param {String|Array<String>} properties - The CSS property or properties to transition
- * @param {Object} [options] - Optional transition parameters
+ * @param {String|Array<String>} properties - The CSS property or properties add transition to
+ * @param {Options} options - options for transition
  */
 function addTransition(el, properties, options = {}) {
   if(typeof properties == "string"){
@@ -219,7 +234,6 @@ function addTransition(el, properties, options = {}) {
 
   let newTransitions = properties.map((property) => {
     let propertyOptions = applyDefaultOptions(el, property, options)
-    console.log(property,propertyOptions);
     let newTransition = property;
     if (propertyOptions.duration !== undefined && propertyOptions.duration !== '') {
       newTransition += ` ${propertyOptions.duration}`;
@@ -263,10 +277,12 @@ function getAutoDimensions(el){
 }
 
 /**
- * Applies default transition styles by searching on conputed styles
+ * Applies default transition styles by searching on computed styles
+ * or applying default duration and timing function if CSS support
+ * is disabled
  * @param {HTMLElement} el - element to check styles on
  * @param {String} porperty - property to check styles on
- * @param {Object} options - Base options 
+ * @param {Options} options - options for transition
  */
 function applyDefaultOptions(el, property, options){
   let optionsCopy = cloneObject(options)
