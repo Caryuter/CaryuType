@@ -1,17 +1,14 @@
-export {resetActiveMode, generateNewMenuStates, onClickMenu}
+export {resetActiveMode, observeNewMenuStates, onClickMenu}
 import { onClickMenuButton, disableAllButtons, enableAllButtons } from "./menuButton.js"
 import { beginTransition } from "../util/transitions.js"
-import { initGame } from "../components/typeChallenge.js"
+import { prepareGame } from "./gameLogic.js"
 
 
 /**
- * Generates an array refering to the new options menu states. 
- * True = expanded
- * False = collapsed
+ * 
  * @param {HTMLButtonElement} activeButton The new active button
- * @returns New menu expanded states
  */
-function generateNewMenuStates(activeButton){
+function observeNewMenuStates(activeButton){
 
     let newMenuStates = []
     if(activeButton.classList.contains("time")){
@@ -26,10 +23,11 @@ function generateNewMenuStates(activeButton){
       newMenuStates = [true, true, false, false, false, true]
     }
 
-    if(menuStatesChanged()){
+    console.log(menuStatesChanged(newMenuStates));
+    if(menuStatesChanged(newMenuStates)){
       toggleSpacersVisibility(newMenuStates)
-      transitionOnToggleMenu(newMenuStates)
-      initGame()
+      toggleMenusVisibility(newMenuStates)
+      prepareGame()
     }   
 }
 
@@ -37,16 +35,16 @@ function generateNewMenuStates(activeButton){
  * Triggers transitions on menus if changed 
  * @param {Array<Boolean>} newStates New menu states
  */
-function transitionOnToggleMenu(newStates){
+function toggleMenusVisibility(newStates){
   disableAllButtons()
 
   let promises = []
   document.querySelector(".options").querySelectorAll("menu").forEach((menu, index)=> {
       if(newStates[index]){
         const delay = getComputedStyle(menu).transitionDuration.split(",")[0]
-        promises.push(beginTransition(menu,"collapse",{"delay": delay}))
+        promises.push(beginTransition(menu,"expand",{"delay": delay}))
       } else {
-        promises.push(beginTransition(menu,"collapse",{"desiredWidth": 0}))
+        promises.push(beginTransition(menu,"collapse"))
       }
   })
 
@@ -56,16 +54,17 @@ function transitionOnToggleMenu(newStates){
 /**
  * 
  * @param {Array<Boolean>} newStates array of menu desired shown states 
- * @returns boolean indicating if menu states changed
+ * @returns {Boolean} boolean indicating if menu states changed
  */
 function menuStatesChanged(newStates){
-    document.querySelector(".options").querySelectorAll("menu")
-    .forEach((menu, index) => {
-      if(isVisible(menu) != newStates[index]){
-        return true
-      }
-    })
-    return false
+  let changed = false
+  document.querySelector(".options").querySelectorAll("menu")
+  .forEach((menu, index) => {
+    if(isVisible(menu) != newStates[index]){
+      changed = true
+    }
+  })
+  return changed
 }
 
 /**
@@ -74,7 +73,7 @@ function menuStatesChanged(newStates){
  * @returns boolean
  */
 function isVisible(el){
-  el.getAttribute("hidden") == null
+  return el.getAttribute("hidden") == null
 }
 
 

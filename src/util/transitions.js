@@ -1,5 +1,5 @@
 export {beginTransition}
-import { arraysAreIdentical, cloneObject, isInDOM, removeFirstOccurrence } from "./utils.js"
+import { arraysAreIdentical, cloneObject, isInDOM, removeFirstOccurrence, resizeArray } from "./utils.js"
 
 
 
@@ -33,6 +33,7 @@ function beginTransition(el,type, options, disableCSS = false) {
   if(!isInDOM(el)){
     return Promise.reject(new Error(`Passed value for transition ${this} isn't an element`))
   }
+  
   console.log(
     {
       "Transitioning element": el,
@@ -40,6 +41,7 @@ function beginTransition(el,type, options, disableCSS = false) {
       "options": options
     }
   );
+  if(!options) options = {}
   options.disableCSS = disableCSS
   switch (type) {
     case 'collapse':
@@ -65,16 +67,14 @@ function beginTransition(el,type, options, disableCSS = false) {
  * @returns {Promise} promise resolving when transition ends
  */
 function collapseElement(el, options){
-  let {desiredWidth} = options
   options.duration = options.duration/2
-  if(!options.desiredOpacity) options.desiredOpacity = 0.7
+  if(!options.desiredOpacity) options.desiredOpacity = 0
+  if(!options.desiredWidth) options.desiredWidth = 0
+  let {desiredWidth} = options
 
   if(isNaN(desiredWidth)) return Promise.reject(new Error("desired width must be a number"))
   let prevWidth = Math.round(el.getBoundingClientRect().width)
   if(prevWidth == desiredWidth) return Promise.resolve()
-
-  
-  
   return transitOpacity(el, options)
   .then(() =>{
     addTransition(el, "width", options)
@@ -103,6 +103,7 @@ function expandElement(el, options){
 
   let desiredWidth = getAutoDimensions(el).width
   let prevWidth = Math.round(el.getBoundingClientRect().width)
+  console.log(desiredWidth, el, prevWidth);
   if(prevWidth == desiredWidth) return Promise.resolve()
   addTransition(el, "width", options)
   el.style.width =  desiredWidth + "px"
@@ -153,7 +154,7 @@ function hideAndDo(el, options){
   return transitOpacity(el, options)
   .then(() => {
     try {
-      Promise.resolve(options.callback())
+      return Promise.resolve(options.callback())
     }catch(e){
       console.error(e.stack);
     }
@@ -177,6 +178,7 @@ function transitOpacity(el, options = {}){
   if(prevOpacity == desiredOpacity) return Promise.resolve()
 
   addTransition(el, "opacity", options)
+
   el.style.opacity = desiredOpacity
   return waitForTransitions(el, "opacity")
 }
@@ -233,6 +235,7 @@ function addTransition(el, properties, options = {}) {
 
 
   let newTransitions = properties.map((property) => {
+    /**@type {Options} */
     let propertyOptions = applyDefaultOptions(el, property, options)
     let newTransition = property;
     if (propertyOptions.duration !== undefined && propertyOptions.duration !== '') {
@@ -248,7 +251,6 @@ function addTransition(el, properties, options = {}) {
     }
     return newTransition
   })
-
   // If there are existing transitions, append the new one
   if (el.style.transition) {
     let existingTransitions = el.style.transition.split(",").map(t => t.trim())
@@ -259,21 +261,25 @@ function addTransition(el, properties, options = {}) {
 }
 
 /**
- * Get dimensions of an element if its width were set to auto
+ * Get dimensions in pixels of an element if its width were set to auto
  * @param {HTMLElement} el - element to get its dimensions
- * @returns {{width: Number, height: Number}}
+ * @returns {{width: Number, height: Number}} `width` and `height` in pixels
  */
 function getAutoDimensions(el){
+  /**@type {HTMLElement} */
   const clone = el.cloneNode(true);
-      clone.style.position = 'absolute';
-      clone.style.visibility = 'hidden';
-      clone.style.width = 'auto';
-      clone.style.height = 'auto';
-      document.body.appendChild(clone);
-      const autoWidth = clone.offsetWidth;
-      const autoHeight = clone.offsetHeight;
-      document.body.removeChild(clone);
-      return { width: autoWidth, height: autoHeight };
+  clone.style.width = "auto"
+  clone.style.height = "auto"
+  const parentClone = el.parentElement.cloneNode(false); //Clone to mantain context
+  parentClone.style.position = 'absolute';
+  parentClone.style.visibility = 'hidden'; // Oculta para no afectar la vista
+  parentClone.appendChild(clone);
+
+  document.body.appendChild(parentClone);
+  const autoWidth = clone.offsetWidth;
+  const autoHeight = clone.offsetHeight;
+  document.body.removeChild(parentClone)
+  return { width: autoWidth, height: autoHeight };
 }
 
 /**
@@ -289,6 +295,7 @@ function applyDefaultOptions(el, property, options){
 
   if(!options.disableCSS){
     let prop = getComputedStyle(el).transitionProperty.split(",").map(s => s.trim())
+    let propLength = prop.length
     let index = prop.findIndex(s => s == property || s == "all")
     if(index == -1){
       console.warn("can't apply default styles to a property that doesn't exists on element")
@@ -301,11 +308,15 @@ function applyDefaultOptions(el, property, options){
     //get property for transition type index and re-destructure it
     [transitionProperty, transitionDuration, transitionTimingFunction, transitionDelay] = transitionproperties.map(
       (val) => {
+        let defVals = []
+        
         if(val == transitionTimingFunction){
-          let timingFunctions = val.match(/(cubic-bezier\(.*\))|(\w+-?)+/g) //Prevent commas in cubic brezier to brake code
-          return timingFunctions[index]
+          defVals = val.match(/(cubic-bezier\(.*\))|(\w+-?)+/g) //Prevent commas in cubic brezier to brake code
         }
-        return val.split(",").map(s => s.trim())[index]
+        defVals = val.split(",").map(s => s.trim())
+        if(defVals != propLength) resizeArray(defVals, propLength, defVals[0])
+        return defVals[index]
+
     })
 
     const numberRegex = /[\d.]+/

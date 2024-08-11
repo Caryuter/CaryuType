@@ -1,5 +1,5 @@
 export {onClickMenuButton, disableAllButtons, enableAllButtons}
-import { resetActiveMode, generateNewMenuStates } from "./optionsMenu.js"
+import { resetActiveMode, observeNewMenuStates } from "./optionsMenu.js"
 
 
 /**
@@ -13,7 +13,7 @@ function onClickMenuButton(button){
     if(button.closest("menu").classList.item(0) == "punc_and_num"){
       button.classList.toggle("selected")
     } else if(button.closest("menu").classList.item(0) == "mode"){
-      generateNewMenuStates(button)
+      observeNewMenuStates(button)
     }
 }
 

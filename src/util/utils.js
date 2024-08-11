@@ -1,4 +1,4 @@
-export {isInDOM, arraysAreIdentical, removeFirstOccurrence, cloneArray, cloneObject}
+export {isInDOM, arraysAreIdentical, removeFirstOccurrence, cloneArray, cloneObject, resizeArray}
 
 /**
  * Checks if the passed value is an Element or Node in DOM
@@ -58,3 +58,21 @@ function cloneArray(arr){
 function cloneObject(obj){
     return Object.assign({}, obj)
 }
+
+/**
+ * Resizes an array to the provided `size` and fills 
+ * new spaces with provided `defval`
+ * 
+ *  
+ * @param {Array} arr - Array to resize
+ * @param {Number} size - Desired size of the array
+ * @param {*} defval
+ */
+function resizeArray(arr, size, defval) {
+    var delta = arr.length - size;
+    if (size > 0){
+        while (delta-- > 0) { arr.pop(); }
+        while (delta++ < 0) { arr.push(defval); }
+    }
+}
+
