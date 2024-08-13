@@ -33,14 +33,6 @@ function beginTransition(el,type, options, disableCSS = false) {
   if(!isInDOM(el)){
     return Promise.reject(new Error(`Passed value for transition ${this} isn't an element`))
   }
-  
-  console.log(
-    {
-      "Transitioning element": el,
-      "Type of transition": type,
-      "options": options
-    }
-  );
   if(!options) options = {}
   options.disableCSS = disableCSS
   switch (type) {
@@ -103,7 +95,6 @@ function expandElement(el, options){
 
   let desiredWidth = getAutoDimensions(el).width
   let prevWidth = Math.round(el.getBoundingClientRect().width)
-  console.log(desiredWidth, el, prevWidth);
   if(prevWidth == desiredWidth) return Promise.resolve()
   addTransition(el, "width", options)
   el.style.width =  desiredWidth + "px"
@@ -125,18 +116,25 @@ function expandElement(el, options){
  * @returns {Promise} A promise that resolves when transition ends
  */
 function moveAbsoluteElement(el, options){
+
   let {xPos, yPos} = options
+  xPos = Math.round(xPos)
+  yPos = Math.round(yPos)
+  let propToTransition = []
 
   if(isNaN(xPos) || isNaN(yPos)) return Promise.reject(new Error("desired position must be a number"))
   let {top, left, height, width} = el.getBoundingClientRect()
-  let prevX = Math.round(left) + Math.round(width)/2
-  let prevY = Math.round(top) + Math.round(height)/2
-  if(prevY == yPos && prevX == xPos) return Promise.resolve()
-
-  addTransition(el, ["top", "left"], options)
-  el.style.top = yPos + "px"
-  el.style.left = xPos + "px"
-  return waitForTransitions(el, ["top", "left"])
+  let prevX = Math.round(left) //+ Math.round(width)/2
+  let prevY = Math.round(top) //+ Math.round(height)/2
+  if(prevX != xPos) propToTransition.push("left")
+  if(prevY != yPos) propToTransition.push("top")
+  console.log({prevY, yPos}, {prevX,xPos});
+  addTransition(el, propToTransition, options)
+  if(propToTransition[0] == undefined) return Promise.resolve()
+  if(propToTransition.includes("left")) el.style.left = xPos + "px"
+  if(propToTransition.includes("top")) el.style.top = yPos + "px"
+  console.log(propToTransition);
+  return waitForTransitions(el, propToTransition)
 }
 
 /**
@@ -159,9 +157,9 @@ function hideAndDo(el, options){
       console.error(e.stack);
     }
   })
-  .then(() => {
+  .then((val) => {
     options.desiredOpacity = 1
-    transitOpacity(el, options)
+    return transitOpacity(el, options, val)
   })
 }
 
@@ -169,9 +167,10 @@ function hideAndDo(el, options){
  * Transitions an element to the desired opacity
  * @param {HTMLElement} el - Element to be transitioned
  * @param {Options} options - options for transition
+ * @param {*} res - Value to return after transition has finished 
  * @return {Promise} a promise that resolves when transition ends
  */
-function transitOpacity(el, options = {}){
+function transitOpacity(el, options = {}, res){
   let {desiredOpacity} = options
   if (isNaN(desiredOpacity)) return Promise.reject(new Error("Didn't passed desired opacity for transitioning element"))
   let prevOpacity = getComputedStyle(el).getPropertyValue("opacity")
@@ -180,17 +179,19 @@ function transitOpacity(el, options = {}){
   addTransition(el, "opacity", options)
 
   el.style.opacity = desiredOpacity
-  return waitForTransitions(el, "opacity")
+  return waitForTransitions(el, "opacity", res)
 }
 
 /**
  * Returns a promise that resolves when the element has transitioned properties passed succesfully
  * @param {HTMLElement} el - element being animated 
- * @param {String|Array<String>} properties - css property or properties being animated 
+ * @param {String|Array<String>} properties - css property or properties being animated
+ * @param {*} res - value to return after transition has finished  
  * @returns {Promise} a promise
  */
-function waitForTransitions(el, properties){
+function waitForTransitions(el, properties, res){
   if(typeof properties == "string") properties = [properties]
+  if(properties[0] == undefined) return Promise.resolve()
 
   let promisesToResolve= properties.length
   return new Promise((resolve) => {
@@ -200,7 +201,7 @@ function waitForTransitions(el, properties){
         promisesToResolve -= 1
         if(promisesToResolve == 0){
           this.removeEventListener("transitionend", onTransitionEnd)
-          resolve()
+          resolve(res)
         }
       }
     })
@@ -298,7 +299,7 @@ function applyDefaultOptions(el, property, options){
     let propLength = prop.length
     let index = prop.findIndex(s => s == property || s == "all")
     if(index == -1){
-      console.warn("can't apply default styles to a property that doesn't exists on element")
+      console.warn("can't apply default styles to a property that doesn't exists on element",el, property,options)
       return optionsCopy
     }
     // get calculated css transition properties for element
