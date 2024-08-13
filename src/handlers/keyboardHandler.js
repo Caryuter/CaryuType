@@ -1,123 +1,134 @@
-import { updateCaret } from "../components/caret"
-import { gameOver, startGame } from "../components/typeChallenge"
-import { checkLetter } from "../util/typeCheckers"
+import { caretSmoothMode, caretStepMode, updateCaret } from "../components/caret.js"
+import { startGame, gameOver, gameHasStarted, gameIsPaused, unPauseGame } from "../components/gameLogic.js"
+import { checkWord, setActiveLetter, markWord, resetWord} from "../util/typeCheckers.js"
 
-export {onKeyUp, onKeyDown, disableInput}
+
+export {onKeyUp, onKeyDown, disableInput, enableInput}
+
+const input = document.querySelector("input")
+const display = document.querySelector(".para")
+
+/**@type {HTMLSpanElement} */
+let activeWord
 
 
 /**
-   * 
-   * @param {KeyboardEvent} key 
-   */
+ * Handler for user char input
+ * @param {KeyboardEvent} key 
+ */
 function onKeyUp(){
-    let textInput = $input.value.split("")
-    let $activeWord = $para.querySelector("word.active")
-    let $letters = $activeWord.querySelectorAll("letter")
-    checkLetter($letters, textInput)
-    $activeWord.children[$input.selectionStart]?.classList.add("active")
-    if(!$activeWord.querySelector(".active")){
-      $activeWord.lastElementChild.classList.add("last")
-    } 
-    $para.querySelectorAll("word.typed").forEach((word) => {
-      if(word.classList.contains("marked")){
-        console.log("Marked");
+  if(input.disabled) return
+  activeWord = display.querySelector("word.active")
+  onType()
+}
+
+/**
+ * Handler for space and backspace input. Also triggers 
+ * game start 
+ * @param {KeyboardEvent} key 
+ */
+function onKeyDown(key){
+  if(input.disabled) return
+  activeWord = display.querySelector("word.active")
+  input.focus()
+  caretSmoothMode()
+  if(!gameHasStarted()){
+    startGame()
+  } else if(gameIsPaused()){
+    unPauseGame()
+  }
+  if(key.code == "Space") onKeySpace(key)
+  if(key.code == "Backspace") onKeyBackspace(key)
+}
+
+/**
+ * Handler for keydown of space key event
+ * @param {KeyboardEvent} key 
+ */
+function onKeySpace(key){
+  key.preventDefault()
+  key.stopPropagation()
+  let nextWord = activeWord.nextElementSibling
+  if(input.value.length > 0) changeActiveWord(nextWord, true)
+ 
+}
+
+/**
+ * Handler for keydown of backspace key event
+ * @param {KeyboardEvent} key 
+ */
+function onKeyBackspace(key){
+  caretStepMode()
+  onType()
+  if(!display.querySelector(".marked") || input.value.length != 0) return
+  key.preventDefault()
+  changeActiveWord(activeWord.previousElementSibling, false)
+}
+
+/**
+ * Handles typing event, whether adding or removing a character
+ */
+function onType(){
+  checkWord(activeWord, input.value)
+  setActiveLetter(activeWord, input)
+  updateCaret(activeWord)
+}
+
+/** 
+ * Changes current active word for `newWord` 
+ * by reseting CSS classes for current word,
+ * adding `.typed` class and `.mark` if there's an incorrect letter
+ * @param {HTMLSpanElement} newWord -  new word
+ * @param {Boolean} mode - true for forward
+ */
+function changeActiveWord(newWord, mode){
+  if(newWord){
+    resetWord(activeWord)
+    resetWord(newWord)
+    newWord.classList.add("active")
+    console.log("Changing word");
+  } 
+  if(mode){
+    if(!newWord) {
+      resetWord(activeWord)
+      gameOver()
+    }
+    markWord(activeWord)
+    populateInput(newWord, mode)
+  } else {
+    populateInput(newWord, mode)
+  }
+}
+
+/**
+ * Populates an input according to the word to match every letter current state
+ * @param {HTMLSpanElement} word - word to match state 
+ * @param {Boolean} mode - true for forward
+ */
+function populateInput(word, mode){
+  input.value = "";
+  if(!mode && word) {
+    word.querySelectorAll("letter")
+    .forEach((letter) => {
+      if(letter.classList.contains("correct")){
+        input.value += letter.textContent
+      } else if (letter.classList.contains("incorrect")){
+
+        if(letter.textContent == "*"){
+          input.value+="?"
+        }else{
+          input.value +="*"
+        }
+
       }
     })
-    
-    updateCaret($activeWord)
   }
+}
 
-/**
-   * 
-   * @param {KeyboardEvent} key 
-   */
-function onKeyDown(key){
-    let textInput = $input.value.split("")
-    let $activeWord = $para.querySelector("word.active")
-    let $newActiveWord = $activeWord
-    let $letters = $activeWord.querySelectorAll("letter")
-    $input.focus()
-    $caret.style.transition = "top .1s ease-in-out, left .1s ease-in-out";
+function disableInput(){
+  input.disabled = true
+}
 
-    //Start GAME =========================
-    if(!gameSarted && !gameFinished){
-      startGame()
-    }
-    
-    checkLetter($letters, textInput)
-    
-    for (let $letter of $activeWord.children){
-      $letter.classList.remove("last")
-      $letter.classList.remove("active")
-    }
-    if(key.code == "Space"){
-      key.preventDefault() 
-      if($activeWord.nextElementSibling){
-        if($input.value.length > 0){
-          $activeWord.classList.remove("active")
-          $activeWord.classList.add("typed")
-          $newActiveWord = $activeWord.nextElementSibling
-          $newActiveWord.classList.add("active")
-          $input.value = "";
-          for (let $letter of $activeWord.children){
-            if(!$letter.classList.contains("correct")){
-              $activeWord.classList.add("marked")
-            }
-          }
-        }
-      } else { 
-        $activeWord.classList.remove("active")
-        $activeWord.classList.add("typed")
-        for (let $letter of $activeWord.children){
-          if(!$letter.classList.contains("correct")){
-            $activeWord.classList.add("marked")
-          }
-        }
-        gameOver()
-      }
-    } 
-    if(key.code == "Backspace"){
-      $caret.style.transition = "none";
-      if($para.querySelector(".marked") && $input.value.length == 0){
-        
-        $newActiveWord = $activeWord.previousElementSibling
-        key.preventDefault()  
-        $activeWord.classList.remove("active")
-        $activeWord.classList.remove("typed")
-        $newActiveWord.classList.add("active")
-        $newActiveWord.classList.remove("marked")
-        $input.value = "";
-        for (let $letter of $activeWord.children){
-          $letter.classList.remove("active")
-          $letter.classList.remove("last")
-        }
-
-        for (let $newLetter of $newActiveWord.children){
-          if($newLetter.classList.contains("correct")){
-            $input.value +=$newLetter.textContent
-          } else if ($newLetter.classList.contains("incorrect")){
-            if($newLetter.textContent == "*"){
-              $input.value+="?"
-            }else{
-              $input.value +="*"
-            }
-          }
-        }
-
-      }
-
-    }
-    checkLetter($para.querySelector("word.active").querySelectorAll("letter"), $input.value.split(""))
-    $newActiveWord.children[$input.value.length]?.classList.add("active")
-    if(!$newActiveWord.querySelector(".active")){
-      $newActiveWord.lastElementChild.classList.add("last")
-    } 
-    $input.maxLength = $newActiveWord.childElementCount
-    
-    updateCaret($newActiveWord)
-    
-  }
-
-  function disableInput(){
-
-  }
+function enableInput(){
+  input.disabled = false
+}

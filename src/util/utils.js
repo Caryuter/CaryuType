@@ -1,4 +1,4 @@
-export {isInDOM, arraysAreIdentical, removeFirstOccurrence, cloneArray, cloneObject, resizeArray}
+export {isInDOM, arraysAreIdentical, removeFirstOccurrence, cloneArray, cloneObject, resizeArray, cloneJson}
 
 /**
  * Checks if the passed value is an Element or Node in DOM
@@ -57,6 +57,15 @@ function cloneArray(arr){
  */
 function cloneObject(obj){
     return Object.assign({}, obj)
+}
+
+/**
+ * Deep clones a JSON object with {@link https://stackoverflow.com/a/122704|some data loss}.
+ * @param {Object} val - object to clone
+ * @returns {Object} - Object
+ */
+function cloneJson(val){
+    return JSON.parse(JSON.stringify(val))
 }
 
 /**

@@ -138,6 +138,9 @@ body {
 }
 /* || ANIMATIONS || */
 @keyframes blink {
+    0% {
+        opacity: 1;
+    }
     50% {
         opacity: 0;
     }
@@ -155,126 +158,124 @@ body > header {
     flex-direction: column;
     gap: 2rem;
 
-    
-    .topbar {
+}
+.topbar {
+    display: flex;
+    width: 100%;
+
+    nav {
+        margin-left: 1rem;
         display: flex;
         width: 100%;
-        .logo{
-            align-items: center;
-            color: var(--color-main);
+        justify-content: space-between;
+        font-size: var(--font-size-medium);
+        ul{           
             display: flex;
-            gap: 0.5rem;
-            cursor: pointer;
-            transition: color .25s linear;
-            svg{
-                fill: var(--color-main);
-                height: auto;
-                width: 40px;
-                transition: fill .25s linear;
-            }
-            h1{
-                position: relative;
-                display: inline-block;
-                height: fit-content;
-                margin-top: -4px;
-                &::before{
-                    content: "monkey see";
-                    position: absolute;
-                    top: -.1em;
-                    left: .5em;
-                    font-size: x-small;
-                    color: var(--color-main-dark);
-                    transition: opacity .25s linear;
-                }
-            }
-            &.not-focused {
-                opacity: 1;
-                color: var(--color-main-dark);
-                svg{
-                    fill: var(--color-main-dark);
-                }
-                h1::before{
-                    opacity: 0;
-                }
-            }
-        }
-
-        nav {
-            margin-left: 1rem;
-            display: flex;
-            width: 100%;
-            justify-content: space-between;
-            font-size: var(--font-size-medium);
-            ul{           
+            gap: 1rem;
+            align-items: stretch;
+            button {
                 display: flex;
-                gap: 1rem;
-                align-items: stretch;
-                button {
-                    display: flex;
-                    font-size: var(--font-size-medium);
-                    align-items: center;
-                    height: 100%;
-                    padding: 0 .35rem;
-                }
-                a {
-                    display: flex;
-                    align-items: center;
-                    height: 100%;
-                    padding: 0 .35rem;
-                }
+                font-size: var(--font-size-medium);
+                align-items: center;
+                height: 100%;
+                padding: 0 .35rem;
+            }
+            a {
+                display: flex;
+                align-items: center;
+                height: 100%;
+                padding: 0 .35rem;
             }
         }
     }
-
-    .options{
-        --options-gap: 2rem;
-        --width-transition-duration: .2s;
-        --opacity-transition-duration: .1s;
-        display: flex;
-        align-self: center;
-        align-items: center;
-        justify-content: center;
-        height: 2.5rem;
-        width: fit-content;
-        background-color: var(--color-bg-secondary);
-        border-radius: 0.5rem;
-        padding: 0 1.2rem;
-
-        menu {
-            text-wrap: nowrap;
-            display: flex;
-            position: relative;
-            overflow: hidden;
-            transition-property: opacity, width;
-            transition-duration: var(--opacity-transition-duration),var(--width-transition-duration);
-            transition-timing-function: linear, ease-in-out;
-
-            button, a{
-                padding: 0.8rem 0.7rem;
-                font-size: var(--font-size-normal);
-            }
-            
-            &[hidden]{
-                opacity: 0;
-                width: 0;
-            }
+}
+.logo{
+    align-items: center;
+    color: var(--color-main);
+    display: flex;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: color .25s linear;
+    svg{
+        fill: var(--color-main);
+        height: auto;
+        width: 40px;
+        transition: fill .25s linear;
+    }
+    h1{
+        position: relative;
+        display: inline-block;
+        height: fit-content;
+        margin-top: -4px;
+        &::before{
+            content: "monkey see";
+            position: absolute;
+            top: -.1em;
+            left: .5em;
+            font-size: x-small;
+            color: var(--color-main-dark);
+            transition: opacity .25s linear;
         }
-        .spacer{
-            display: block;
-            width: 7px;
-            height: 55%;
-            background-color: var(--color-bg);
-            border-radius: 1rem;
-            margin: 0 10px;
-            transition-property: width, margin;
-            transition-duration: var(--width-transition-duration);
-            transition-delay: var(--opacity-transition-duration);
-            transition-timing-function: ease-in-out;
-            
-            &[hidden]{
-                width: 0;
-                margin: 0;
-            }
+    }
+    &.not-focused {
+        opacity: 1;
+        color: var(--color-main-dark);
+        svg{
+            fill: var(--color-main-dark);
+        }
+        h1::before{
+            opacity: 0;
+        }
+    }
+}
+.options{
+    --options-gap: 2rem;
+    --width-transition-duration: .2s;
+    --opacity-transition-duration: .1s;
+    display: flex;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    height: 2.5rem;
+    width: fit-content;
+    background-color: var(--color-bg-secondary);
+    border-radius: 0.5rem;
+    padding: 0 1.2rem;
+
+    menu {
+        text-wrap: nowrap;
+        display: flex;
+        position: relative;
+        overflow: hidden;
+        transition-property: opacity, width;
+        transition-duration: var(--opacity-transition-duration),var(--width-transition-duration);
+        transition-timing-function: linear, ease-in-out;
+
+        button, a{
+            padding: 0.8rem 0.7rem;
+            font-size: var(--font-size-normal);
+        }
+        
+        &[hidden]{
+            opacity: 0;
+            width: 0;
+        }
+    }
+    .spacer{
+        display: block;
+        width: 7px;
+        height: 55%;
+        background-color: var(--color-bg);
+        border-radius: 1rem;
+        margin: 0 10px;
+        transition-property: width, margin;
+        transition-duration: var(--width-transition-duration);
+        transition-delay: var(--opacity-transition-duration);
+        transition-timing-function: ease-in-out;
+        
+        &[hidden]{
+            width: 0;
+            margin: 0;
         }
     }
 }
@@ -302,7 +303,6 @@ main {
             justify-self: start;
             font-size: var(--font-size-bigger);
             color: var(--color-main);
-            /* opacity: 0; */
         }
         .lang{
             font-size: var(--font-size-medium);
@@ -320,7 +320,6 @@ main {
                 position: absolute;
                 right: 0;
                 top: 0;
-                opacity: 0;
                 cursor: none;
             }
             .para {
@@ -331,6 +330,7 @@ main {
                 display: inline-block;
                 margin: .5rem;
                 border-bottom: 2px solid transparent;
+                
                 &.marked {
                     border-bottom-color: red;
                 
@@ -355,11 +355,7 @@ main {
                 left: 0;
                 background-color: var(--color-secondary);
                 opacity: 1;
-                animation-name: blink;
-                animation-duration: 1s;
-                animation-iteration-count: infinite;
-                animation-timing-function: step-end;
-                
+                animation: blink 1s step-end infinite;
                 transition: top .1s ease-in-out, left .1s ease-in-out;
             }
         }

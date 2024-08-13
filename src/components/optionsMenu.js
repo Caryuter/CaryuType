@@ -102,18 +102,16 @@ function toggleSpacersVisibility(states){
 function resetActiveMode(button){
     let buttonMenu = button.closest("menu")
     let buttonMenuClass = buttonMenu.classList.item(0)
-    if ((buttonMenuClass != "punc_and_num") || (buttonMenuClass != "custom_select")){
+    if ((buttonMenuClass != "punc_and_num") && (buttonMenuClass != "custom_select")){
       let siblingButtons = buttonMenu.querySelectorAll("button")
       siblingButtons.forEach(siblingButton => siblingButton.classList.remove("active"))
       button.classList.add("active")
     }
-    button.classList.add("active")
 }
 
 /**
  * 
  * @param {MouseEvent} event 
- * @returns 
  */
 function onClickMenu(event){
     /** @type {HTMLElement} button */

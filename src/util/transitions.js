@@ -123,7 +123,7 @@ function moveAbsoluteElement(el, options){
   let propToTransition = []
 
   if(isNaN(xPos) || isNaN(yPos)) return Promise.reject(new Error("desired position must be a number"))
-  let {top, left, height, width} = el.getBoundingClientRect()
+  let {top, left} = el.getBoundingClientRect()
   let prevX = Math.round(left) //+ Math.round(width)/2
   let prevY = Math.round(top) //+ Math.round(height)/2
   if(prevX != xPos) propToTransition.push("left")

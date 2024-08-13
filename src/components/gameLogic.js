@@ -1,7 +1,9 @@
-export {startGame, prepareGame, gameOver, notStarted}
-import { disableInput } from "../handlers/keyboardHandler.js";
+export {startGame, prepareGame, gameOver, gameHasStarted, gameIsPaused, pauseGame, unPauseGame, settings}
+import { disableInput, enableInput } from "../handlers/keyboardHandler.js";
+import timer from "../handlers/timer.js";
 import { beginTransition } from "../util/transitions.js";
-import { populateDisplay, focusTypeSection } from "./gameDisplay.js";
+import { updateCounter } from "./counterDisplay.js";
+import { populateDisplay, focusTypeSection, unFocusTypeSection } from "./gameDisplay.js";
 
 
 /**
@@ -34,24 +36,22 @@ import { populateDisplay, focusTypeSection } from "./gameDisplay.js";
 /**@type {settings} */
 let settings = {};
 let gameSarted = false
+let isPaused = false
 let gameFinished = false
-let timer;
-let timerCount = 0;
 let wordsCount = 0;
-let textWordsLength = 0;
+let textLength = 0;
 
 function startGame(){
     gameSarted = true
+    timer.start()
     focusTypeSection()
-    if(settings.gameMode == "time"){
-      startTimer()
-    }
+    updateCounter(settings, {"timerCount": 0, "textLength": textLength, "wordsCount": 0})
 }
 
 function gameOver(){
   gameSarted = false
   gameFinished = true
-  clearInterval(timer)
+  timer.reset()
   disableInput()
   beginTransition(
     document.getElementById("type_challenge"),
@@ -61,51 +61,68 @@ function gameOver(){
 }
 
 function prepareGame(){
+  disableInput()
   saveConfig()
+  timer.reset() 
+  switch (settings.gameMode) {
+    case "time":
+      timer.setCallback(() => {
+        updateCounter(settings, {"timerCount": timer.count})
+        if(timer.count >= settings.difficulty){
+            gameOver()
+        }
+      })
+      break;
+    case "words":
+      console.log("words");
+      break
+    case "quote":
+      console.log("Quote");
+      break
+    case "zen":
+      console.log("Zen");
+      break
+    case "custom":
+      console.log("custom");
+      break
+  }
   return beginTransition(
     document.getElementById("type_challenge"),
     "hide-and-do",
-    {"callback": populateDisplay.bind(null, )}
-  )
+    {"callback": populateDisplay.bind(null, settings.gameMode)}
+  ).then((val) => {
+    textLength = val
+    enableInput()
+  })
+
+}
+
+function pauseGame(){
+  timer.pause()
+  unFocusTypeSection()
+  isPaused = true
+}
+
+function unPauseGame(){
+  timer.start()
+  focusTypeSection()
+  isPaused = false
 }
 
 /**
- * Returns true if game hasn't started
+ * Returns true if game has started
  * @returns {Boolean} - boolean
  */
-function notStarted(){
-  return !gameSarted
+function gameHasStarted(){
+  return gameSarted
 }
-
-
 /**
- * Starts timer for game
+ * Returns true if game is paused
+ * @returns 
  */
-function startTimer(){
-  if(timer){
-    return
-  }
-  timer = setInterval(() => {
-    timerCount++
-    updateCounter()
-    if(timerCount >= settings.difficulty){
-      gameOver()
-    }
-  },1000)
+function gameIsPaused(){
+  return isPaused
 }
-
-/**
- * Updates counter text depending on mode an count variables
- */
-function updateCounter(){
-  const counter = document.querySelector(".counter")
-  if(settings.gameMode == "time"){
-    counter.textContent = settings.difficulty - timerCount
-  } else if(settings.gameMode == "words"){
-    counter.textContent = `${wordsCount}: ${textWordsLength}`
-  }
-}
-
 
 /**
  * Saves config in settingsJson variable 

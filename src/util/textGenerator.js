@@ -28,7 +28,7 @@ function randomWord() {
 function randomTextArray(){
   let textArray = []
   for (let i = 0; i <= wordsNum; i++){
-    textArray.push(randomWord)
+    textArray.push(randomWord())
   }
   return textArray
 }
