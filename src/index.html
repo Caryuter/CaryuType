@@ -103,7 +103,99 @@
             <button type="reset" class="reset"><i class="fi fi-br-rotate-right"></i></button>
         </section>
         <section id="stats">
-
+            
+        </section>
+        <section id="login">
+            <section class="sign_up">
+                <!-- TODO: FORM action -->
+                <form action="" method="post">
+                    <h2 class="form_title"><i class="fi fi-ss-user-add"></i>register</h2>
+                    <ul class="input_fields">
+                        <li class="input_field">
+                            <label for="signup_username">username</label>
+                            <input type="text" name="username" id="signup_username">
+                            <span class="status_indicator">
+                                <i class="available_icon fi fi-br-check" hidden></i>
+                                <i class="unavailable_icon fi fi-ss-user" hidden></i>
+                                <i class="checking_icon fi fi-br-spinner" hidden></i>
+                                <span class="tooltip"></span>
+                            </span>
+                        </li>
+                        <li class="input_field">
+                            <label for="signup_email">email</label>
+                            <input type="email" name="email" id="signup_email">
+                            <span class="status_indicator">
+                                <i class="available_icon fi fi-br-check" hidden></i>
+                                <i class="wrong_icon fi fi-br-cross-small" hidden></i>
+                                <span class="tooltip"></span>
+                            </span>
+                        </li>
+                        <li class="input_field">
+                            <label for="signup_email">verify email</label>
+                            <input type="email" name="verify_email" id="signup_verify_email">
+                            <span class="status_indicator">
+                                <i class="available_icon fi fi-br-check" hidden></i>
+                                <i class="wrong_icon fi fi-br-cross-small" hidden></i>
+                                <span class="tooltip"></span>
+                            </span>
+                        </li>
+                        <li class="input_field">
+                            <label for="signup_password">password</label>
+                            <input type="password" name="password" id="signup_password">
+                            <span class="status_indicator">
+                                <i class="available_icon fi fi-br-check" hidden></i>
+                                <i class="wrong_icon fi fi-br-cross-small" hidden></i>
+                                <span class="tooltip"></span>
+                            </span>
+                        </li>
+                        <li class="input_field">
+                            <label for="signup_verify_password">password</label>
+                            <input type="password" name="verify_password" id="signup_verify_password">
+                            <span class="status_indicator">
+                                <i class="available_icon fi fi-br-check" hidden></i>
+                                <i class="wrong_icon fi fi-br-cross-small" hidden></i>
+                                <span class="tooltip"></span>
+                            </span>
+                        </li>
+                        <li class="submit_field">
+                            <button type="submit" class="submit_signup"><i class="fi fi-ss-user-add"></i>sign up</button>
+                        </li>
+                    </ul>
+                </form>
+            </section>
+            <section class="log_in">
+                <h2 class="form_title"><i class="fi fi-br-sign-in-alt"></i>login</h2>
+                <ul class="accounts">
+                    <li class="account_provider">
+                        <button class="google_login"><i class="fi fi-brands-google"></i></button>
+                    </li>
+                    <li class="account_provider">
+                        <button class="github_login"><i class="fi fi-brands-github"></i></button>
+                    </li>
+                </ul>
+                <div class="login_separator">or</div>
+                <!-- TODO: FORM ACTION -->
+                <form action="" method="post">
+                    <ul class="input_fields">
+                        <li class="input_field">
+                            <label for="login_email">email</label>
+                            <input type="email" name="email" id="login_email">
+                        </li>
+                        <li class="input_field">
+                            <label for="login_password">password</label>
+                            <input type="password" name="password" id="login_password">
+                        </li>
+                        <li class="input_field">
+                            <input type="checkbox" name="remember" id="login_remember" checked>
+                            <label for="login_remember">remember me</label>
+                        </li>
+                        <li class="submit_field">
+                            <button type="submit" class="submit_login"><i class="fi fi-br-sign-in-alt"></i>sign in</button>
+                        </li>
+                    </ul>
+                </form>
+                <button class="forgot_passwd">forgot password?</button>
+            </section>
         </section>
     </main>
     <footer>
