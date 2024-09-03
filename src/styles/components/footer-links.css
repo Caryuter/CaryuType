@@ -1,0 +1,16 @@
+.social_and_options{
+    justify-content: space-between;
+    width: 100%;
+    & nav {
+        display: flex;
+        justify-content: space-between;
+        gap: 2rem;
+        & ul{
+            display: flex;
+            flex-wrap: wrap;
+            button,a{
+                padding: 0.2rem .5rem;
+            }
+        }
+    }
+}

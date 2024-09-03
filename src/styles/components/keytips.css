@@ -1,0 +1,10 @@
+.keytips{
+    text-align: center;
+    line-height: 2;
+    kbd{
+        padding: .1em .3em;
+        background-color: var(--color-main-dark);
+        border-radius: .15em;
+        color: var(--color-bg);
+    }
+}

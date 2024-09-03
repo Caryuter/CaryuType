@@ -1,0 +1,29 @@
+html{
+    font-family: var(--font-family-primary);
+    background-color: var(--color-bg);
+}
+
+p,
+span,
+li,
+a,
+i,
+button{
+    font-family: var(--font-family-primary);
+    color: var(--color-main-dark);
+}
+
+ul,
+menu{
+    list-style: none;
+}
+
+h1 {
+    font-family: var(--font-family-secondary);
+    font-weight: 400;
+    font-size: var(--font-size-bigger);
+}
+
+svg{
+    fill: var(--color-main-dark);
+}

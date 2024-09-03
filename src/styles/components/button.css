@@ -1,0 +1,47 @@
+.icon_button {
+    cursor: pointer;
+    transition: color .2s ease-in;
+    i{
+        transition: color .2s ease-in;
+        display: inline-flex;
+    }
+    &:hover,&.active, &.selected{
+        color: var(--color-main);
+        i{
+            color: var(--color-main);
+        }
+    }
+    &:active{
+        color: var(--color-main-dark);
+        i{
+            color: var(--color-main-dark);
+        }
+    }
+
+    
+}
+.text_button {
+    display: flex;
+    align-items: center;
+    gap: .5em;
+    cursor: pointer;
+    transition: color .2s ease-in;
+    i{
+        transition: color .2s ease-in;
+        display: inline-flex;
+    }
+    &:hover, &.active,  &.selected{
+        color: var(--color-main);
+        i{
+            color: var(--color-main);
+        }
+    }
+
+    &:active{
+        color: var(--color-main-dark);
+        i{
+            color: var(--color-main-dark);
+        }
+    }
+
+}
