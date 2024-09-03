@@ -1,3 +1,4 @@
+import resultsChart from "./components/results-chart.js"
 import { onClickMenu } from "./components/optionsMenu.js"
 import { onKeyUp, onKeyDown } from "./handlers/keyboardHandler.js"
 import { styleInteractiveButtons } from "./util/styleButtons.js"
