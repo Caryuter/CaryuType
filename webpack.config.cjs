@@ -51,7 +51,7 @@ module.exports =  (env, argv) => {
   const isProductionMode = mode == "production"
 
   return {
-    entry: ["./src/index.js", "./src/styles/index.css"],
+    entry: ["./src/index.js", "./src/assets/styles/index.css"],
     mode: "development",
     output: {
       path: path.join(__dirname, 'dist'),
@@ -71,7 +71,7 @@ module.exports =  (env, argv) => {
     ...(!isProductionMode && {devtool:"eval-cheap-module-source-map"}),
     devServer: {
       static: "./dist",
-      hot: true
+      watchFiles:['src/**/*'] // to detect changes on all files inside src directory
     },
     plugins: [
       new htmlWebpackPlugin({
@@ -95,7 +95,8 @@ module.exports =  (env, argv) => {
         "inject": true,
         "devMode": "webapp",
         "cache": true,
-        "outputPath": "assets/icons",
+        "outputPath": "./assets/icons",
+        "prefix": "./assets/icons/", // Use prefix instead of "OutputPath" to prevent generated HTML to refer to correct dir
         "favicons": {
           "icons": {
             "android": true,
@@ -109,13 +110,16 @@ module.exports =  (env, argv) => {
         
       }),
     ],
+
+    //Enable cache for all files 
     cache: {
       type: 'filesystem', 
       cacheDirectory: path.resolve(__dirname, '.temp_cache')
     },
     optimization: {
       moduleIds: "deterministic",
-      runtimeChunk: "single",
+      runtimeChunk: "single", //Only load necesary chunks when change happens
+      //Separate all production libs on a separate chunk
       splitChunks: {
         cacheGroups: {
           vendor: {
