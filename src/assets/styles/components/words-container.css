@@ -1,36 +1,39 @@
-.words_container{
-    font-size: var(--font-size-bigger);
-    overflow-wrap: break-word;
-    display: block;
-    width: 100%;
-    input{
-        position: absolute;
-        right: 0;
-        top: 0;
-        cursor: none;
+.words_container {
+  font-size: var(--font-size-bigger);
+  overflow-wrap: break-word;
+  display: block;
+  width: 100%;
+
+  input {
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: none;
+  }
+
+  .para {
+    line-height: 2rem;
+  }
+
+  word {
+    display: inline-block;
+    margin: 0.5rem;
+    border-bottom: 2px solid transparent;
+
+    &.marked {
+      border-bottom-color: red;
     }
-    .para {
-        line-height: 2rem;
+  }
+
+  letter {
+    position: relative;
+
+    &.correct {
+      color: var(--color-correct);
     }
-    
-    word {
-        display: inline-block;
-        margin: .5rem;
-        border-bottom: 2px solid transparent;
-        
-        &.marked {
-            border-bottom-color: red;
-        
-        }
-        
+
+    &.incorrect {
+      color: var(--color-wrong);
     }
-    letter {
-        position: relative;
-        &.correct {
-            color: var(--color-correct);
-        }
-        &.incorrect {
-            color: var(--color-wrong);
-        }
-    }
+  }
 }

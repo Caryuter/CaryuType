@@ -1,19 +1,24 @@
-export {populateDisplay, focusTypeSection, unFocusTypeSection}
+export { populateDisplay, focusTypeSection, unFocusTypeSection };
 
-import { randomTextArray } from "../util/textGenerator.js"
-import { playCaretAnimation, stopCaretAnimation, updateCaret } from "./caret.js"
-import { beginTransition } from "../util/transitions.js"
+import { randomTextArray } from "../util/textGenerator.js";
+import {
+  playCaretAnimation,
+  stopCaretAnimation,
+  updateCaret,
+} from "./caret.js";
+import { beginTransition } from "../util/transitions.js";
 
-
-const display = document.querySelector(".para")
-const onWriteNotFocus= [document.querySelector(".topbar nav"),
+const display = document.querySelector(".para");
+const onWriteNotFocus = [
+  document.querySelector(".topbar nav"),
   document.querySelector(".options"),
-  document.querySelector(".topbar .logo"),
+  document.querlector(".topbar .logo"),
   document.querySelector(".counter"),
   document.querySelector(".lang"),
-  document.querySelector("footer")];
+  document.querySelector("footer"),
+];
 
-let isFocused = false
+let isFocused = false;
 
 // TODO:
 // - Mejor generacion de texto coherente
@@ -25,80 +30,74 @@ let isFocused = false
 // -Promesa que resuelva cuando el texto
 
 /**
- * 
- * @param {import("./gameLogic.js").GameMode} mode 
- * @returns 
+ *
+ * @param {import("./gameLogic.js").GameMode} mode
+ * @returns
  */
-function populateDisplay(mode){
-  let text = ""
-    if(mode == "time" || mode == "words"){
-      text = randomTextArray() 
-    }
-  const currentText = text.map((word) => {
-    let wordletters = word.split("")
-    return word = 
-    `<word>${wordletters.map((letter) => {
-        return `<letter>${letter}</letter>`
-      }).join("")}</word>`
+function populateDisplay(mode) {
+  let text = "";
+  if (mode == "time" || mode == "words") {
+    text = randomTextArray();
+  }
+  const currentText = text
+    .map((word) => {
+      let wordletters = word.split("");
+      return (word = `<word>${wordletters
+        .map((letter) => {
+          return `<letter>${letter}</letter>`;
+        })
+        .join("")}</word>`);
+    })
+    .join("");
 
-    }).join("")
-
-  display.innerHTML = currentText
-  display.children[0].classList.add("active")
-  display.children[0].children[0].classList.add("active")
-  updateCaret(display.querySelector("word.active"))
+  display.innerHTML = currentText;
+  display.children[0].classList.add("active");
+  display.children[0].children[0].classList.add("active");
+  updateCaret(display.querySelector("word.active"));
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(text.length)
-    }, 1000)
-  })
+      resolve(text.length);
+    }, 1000);
+  });
 }
 
 /**
  * Hides everything and focus only the type section
- */  
-function focusTypeSection(){
-  if(isFocused) return
+ */
+function focusTypeSection() {
+  if (isFocused) return;
   onWriteNotFocus.forEach((el) => {
-    let desiredOpacity
-    if(el != document.querySelector(".counter")){
-      el.classList.add("not-focused")
-      desiredOpacity = 0
+    let desiredOpacity;
+    if (el != document.querySelector(".counter")) {
+      el.classList.add("not-focused");
+      desiredOpacity = 0;
     } else {
-      el.classList.remove("not-focused")
-      desiredOpacity = 1
+      el.classList.remove("not-focused");
+      desiredOpacity = 1;
     }
-    beginTransition(
-      el,
-      "opacity",
-      {
-        "desiredOpacity": desiredOpacity,
-        "duration": ".15s",
-        "timingFunction": "linear"
-      }
-    )
-  })
-  stopCaretAnimation()
-  isFocused = true
+    beginTransition(el, "opacity", {
+      desiredOpacity: desiredOpacity,
+      duration: ".15s",
+      timingFunction: "linear",
+    });
+  });
+  stopCaretAnimation();
+  isFocused = true;
 }
 
 /**
  * Shows everything and unfocus type section
- */  
-function unFocusTypeSection(){
-  if(!isFocused) return
+ */
+function unFocusTypeSection() {
+  if (!isFocused) return;
   onWriteNotFocus.forEach((el) => {
-    el.classList.remove("not-focused")
-    beginTransition(
-      el,
-      "opacity",
-      {
-        "desiredOpacity": 1,
-        "duration": ".15s",
-        "timingFunction": "linear"
-      }
-    )
-  })
-  playCaretAnimation()
-  isFocused = false
+    el.classList.remove("not-focused");
+    beginTransition(el, "opacity", {
+      desiredOpacity: 1,
+      duration: ".15s",
+      timingFunction: "linear",
+    });
+  });
+  playCaretAnimation();
+  isFocused = false;
 }

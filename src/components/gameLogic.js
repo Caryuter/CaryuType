@@ -1,10 +1,22 @@
-export {startGame, prepareGame, gameOver, gameHasStarted, gameIsPaused, pauseGame, unPauseGame, settings}
+export {
+  startGame,
+  prepareGame,
+  gameOver,
+  gameHasStarted,
+  gameIsPaused,
+  pauseGame,
+  unPauseGame,
+  settings,
+};
 import { disableInput, enableInput } from "../handlers/keyboardHandler.js";
 import timer from "../handlers/timer.js";
 import { beginTransition } from "../util/transitions.js";
 import { updateCounter } from "./counterDisplay.js";
-import { populateDisplay, focusTypeSection, unFocusTypeSection } from "./gameDisplay.js";
-
+import {
+  populateDisplay,
+  focusTypeSection,
+  unFocusTypeSection,
+} from "./gameDisplay.js";
 
 /**
  * @typedef GameMode
@@ -30,125 +42,142 @@ import { populateDisplay, focusTypeSection, unFocusTypeSection } from "./gameDis
  * @property {Boolean} [writingSettings.punctuation] - wether text should include puntuations or not
  * @property {Boolean} [writingSettings.numbers] - wether text should include numbers or not
  * @property {Timertime|wordsLength|quoteLength} difficulty - The difficulty level
- * 
-*/
+ *
+ */
 
 /**@type {settings} */
 let settings = {};
-let gameSarted = false
-let isPaused = false
-let gameFinished = false
+let gameSarted = false;
+let isPaused = false;
+let gameFinished = false;
 let wordsCount = 0;
 let textLength = 0;
 
-function startGame(){
-    gameSarted = true
-    timer.start()
-    focusTypeSection()
-    updateCounter(settings, {"timerCount": 0, "textLength": textLength, "wordsCount": 0})
+function startGame() {
+  gameSarted = true;
+  timer.start();
+  focusTypeSection();
+  updateCounter(settings, {
+    timerCount: 0,
+    textLength: textLength,
+    wordsCount: 0,
+  });
 }
 
-function gameOver(){
-  gameSarted = false
-  gameFinished = true
-  timer.reset()
-  disableInput()
-  beginTransition(
-    document.getElementById("type_challenge"),
-    "opacity",{"desiredOpacity": 0,}
-  )
-  .then(() => console.log("GAME OVER"))
+function gameOver() {
+  gameSarted = false;
+  gameFinished = true;
+  timer.reset();
+  disableInput();
+  beginTransition(document.getElementById("type_challenge"), "opacity", {
+    desiredOpacity: 0,
+  }).then(() => console.log("GAME OVER"));
 }
 
-function prepareGame(){
-  disableInput()
-  saveConfig()
-  timer.reset() 
+function prepareGame() {
+  disableInput();
+  saveConfig();
+  timer.reset();
   switch (settings.gameMode) {
     case "time":
       timer.setCallback(() => {
-        updateCounter(settings, {"timerCount": timer.count})
-        if(timer.count >= settings.difficulty){
-            gameOver()
+        updateCounter(settings, { timerCount: timer.count });
+        if (timer.count >= settings.difficulty) {
+          gameOver();
         }
-      })
+      });
       break;
     case "words":
       console.log("words");
-      break
+      break;
     case "quote":
       console.log("Quote");
-      break
+      break;
     case "zen":
       console.log("Zen");
-      break
+      break;
     case "custom":
       console.log("custom");
-      break
+      break;
   }
   return beginTransition(
     document.getElementById("type_challenge"),
     "hide-and-do",
-    {"callback": populateDisplay.bind(null, settings.gameMode)}
+    { callback: populateDisplay.bind(null, settings.gameMode) }
   ).then((val) => {
-    textLength = val
-    enableInput()
-  })
-
+    textLength = val;
+    enableInput();
+  });
 }
 
-function pauseGame(){
-  timer.pause()
-  unFocusTypeSection()
-  isPaused = true
+function pauseGame() {
+  timer.pause();
+  unFocusTypeSection();
+  isPaused = true;
 }
 
-function unPauseGame(){
-  timer.start()
-  focusTypeSection()
-  isPaused = false
+function unPauseGame() {
+  timer.start();
+  focusTypeSection();
+  isPaused = false;
 }
 
 /**
  * Returns true if game has started
  * @returns {Boolean} - boolean
  */
-function gameHasStarted(){
-  return gameSarted
+function gameHasStarted() {
+  return gameSarted;
 }
 /**
  * Returns true if game is paused
- * @returns 
+ * @returns
  */
-function gameIsPaused(){
-  return isPaused
+function gameIsPaused() {
+  return isPaused;
 }
 
 /**
- * Saves config in settingsJson variable 
+ * Saves config in settingsJson variable
  */
-function saveConfig(){
-  let gameMode = document.querySelector(".mode").querySelector(".active").classList.item(0)
+function saveConfig() {
+  let gameMode = document
+    .querySelector(".mode")
+    .querySelector(".active")
+    .classList.item(0);
 
-  settings.gameMode = gameMode
-  
-  if(gameMode == "words" || gameMode == "time" || gameMode == "custom") {
-    let punctuationSetting = document.querySelector(".punc_and_num").querySelector(".punctuation").classList.contains("selected")
-    let numbersSetting = document.querySelector(".punc_and_num").querySelector(".numbers").classList.contains("selected")
-    settings.writingSettings= {
+  settings.gameMode = gameMode;
+
+  if (gameMode == "words" || gameMode == "time" || gameMode == "custom") {
+    let punctuationSetting = document
+      .querySelector(".punc_and_num")
+      .querySelector(".punctuation")
+      .classList.contains("selected");
+    let numbersSetting = document
+      .querySelector(".punc_and_num")
+      .querySelector(".numbers")
+      .classList.contains("selected");
+    settings.writingSettings = {
       puncutation: punctuationSetting,
-      numbers: numbersSetting
-    }
+      numbers: numbersSetting,
+    };
   }
 
-  if(gameMode == "words"){
-    settings.difficulty = document.querySelector(".words_select").querySelector(".active").getAttribute("words")
-  }else if(gameMode == "time"){
-    settings.difficulty = document.querySelector(".time_select").querySelector(".active").getAttribute("time")
-  }else if(gameMode == "quote"){
-    settings.difficulty = document.querySelector(".quote_select").querySelector(".active").getAttribute("length")
+  if (gameMode == "words") {
+    settings.difficulty = document
+      .querySelector(".words_select")
+      .querySelector(".active")
+      .getAttribute("words");
+  } else if (gameMode == "time") {
+    settings.difficulty = document
+      .querySelector(".time_select")
+      .querySelector(".active")
+      .getAttribute("time");
+  } else if (gameMode == "quote") {
+    settings.difficulty = document
+      .querySelector(".quote_select")
+      .querySelector(".active")
+      .getAttribute("length");
   }
-  console.log(JSON.stringify(settings,null,3));
+  console.log(JSON.stringify(settings, null, 3));
 }
-
-

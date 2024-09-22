@@ -1,33 +1,31 @@
 /* || BASE STYLES || */
 
-@import "./base/variables.css";
-@import "./base/reset.css";
-@import "./base/base.css";
+@import url("./base/variables.css");
+@import url("./base/reset.css");
+@import url("./base/base.css");
 
-/* || LAYOUT STYLES ||*/
+/* || LAYOUT STYLES || */
 
-@import "./layout/page.css";
-@import "./layout/header.css";
-@import "./layout/footer.css";
+@import url("./layout/page.css");
+@import url("./layout/header.css");
+@import url("./layout/footer.css");
 
 /* || PAGES STYLES || */
 
-@import "./pages/type-challenge.css";
-@import "./pages/results.css";
+@import url("./pages/type-challenge.css");
+@import url("./pages/results.css");
 
 /* || COMPONENTS STYLES || */
 
-@import "./components/button.css";
-@import "./components/caret.css";
-@import "./components/footer-links.css";
-@import "./components/home-logo.css";
-@import "./components/keytips.css";
-@import "./components/options-menu.css";
-@import "./components/topbar.css";
-@import "./components/words-container.css";
+@import url("./components/button.css");
+@import url("./components/caret.css");
+@import url("./components/footer-links.css");
+@import url("./components/home-logo.css");
+@import url("./components/keytips.css");
+@import url("./components/options-menu.css");
+@import url("./components/topbar.css");
+@import url("./components/words-container.css");
 
 /* || THEME STYLES || */
 
-@import "./themes/mobile.css";
-
-
+@import url("./themes/mobile.css");

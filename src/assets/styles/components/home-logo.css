@@ -1,39 +1,45 @@
-.logo{
-    align-items: center;
-    color: var(--color-main);
-    display: flex;
-    gap: 0.5rem;
-    cursor: pointer;
-    transition: color .25s linear;
-    svg{
-        fill: var(--color-main);
-        height: auto;
-        width: 40px;
-        transition: fill .25s linear;
+.logo {
+  align-items: center;
+  color: var(--color-main);
+  display: flex;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: color 0.25s linear;
+
+  svg {
+    fill: var(--color-main);
+    height: auto;
+    width: 40px;
+    transition: fill 0.25s linear;
+  }
+
+  h1 {
+    position: relative;
+    display: inline-block;
+    height: fit-content;
+    margin-top: -4px;
+
+    &::before {
+      content: "monkey see";
+      position: absolute;
+      top: -0.1em;
+      left: 0.5em;
+      font-size: x-small;
+      color: var(--color-main-dark);
+      transition: opacity 0.25s linear;
     }
-    h1{
-        position: relative;
-        display: inline-block;
-        height: fit-content;
-        margin-top: -4px;
-        &::before{
-            content: "monkey see";
-            position: absolute;
-            top: -.1em;
-            left: .5em;
-            font-size: x-small;
-            color: var(--color-main-dark);
-            transition: opacity .25s linear;
-        }
+  }
+
+  &.not-focused {
+    opacity: 1;
+    color: var(--color-main-dark);
+
+    svg {
+      fill: var(--color-main-dark);
     }
-    &.not-focused {
-        opacity: 1;
-        color: var(--color-main-dark);
-        svg{
-            fill: var(--color-main-dark);
-        }
-        h1::before{
-            opacity: 0;
-        }
+
+    h1::before {
+      opacity: 0;
     }
+  }
 }

@@ -1,47 +1,42 @@
 .icon_button {
-    cursor: pointer;
-    transition: color .2s ease-in;
-    i{
-        transition: color .2s ease-in;
-        display: inline-flex;
-    }
-    &:hover,&.active, &.selected{
-        color: var(--color-main);
-        i{
-            color: var(--color-main);
-        }
-    }
-    &:active{
-        color: var(--color-main-dark);
-        i{
-            color: var(--color-main-dark);
-        }
-    }
+  cursor: pointer;
+  transition: color 0.2s ease-in;
 
-    
+  i {
+    transition: color 0.2s ease-in;
+    display: inline-flex;
+  }
 }
+
 .text_button {
-    display: flex;
-    align-items: center;
-    gap: .5em;
-    cursor: pointer;
-    transition: color .2s ease-in;
-    i{
-        transition: color .2s ease-in;
-        display: inline-flex;
-    }
-    &:hover, &.active,  &.selected{
-        color: var(--color-main);
-        i{
-            color: var(--color-main);
-        }
-    }
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  cursor: pointer;
+  transition: color 0.2s ease-in;
 
-    &:active{
-        color: var(--color-main-dark);
-        i{
-            color: var(--color-main-dark);
-        }
-    }
+  i {
+    transition: color 0.2s ease-in;
+    display: inline-flex;
+  }
+}
 
+.text_button:hover,
+.text_button.selected,
+.icon_button:hover,
+.icon_button.selected {
+  color: var(--color-main);
+
+  i {
+    color: var(--color-main);
+  }
+}
+
+.text_button.active,
+.icon_button.active {
+  color: var(--color-main-dark);
+
+  i {
+    color: var(--color-main-dark);
+  }
 }
