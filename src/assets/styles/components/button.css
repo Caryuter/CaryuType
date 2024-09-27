@@ -1,0 +1,35 @@
+.icon_button {
+	cursor: pointer;
+	transition: color 0.2s ease-in;
+
+	i {
+		transition: color 0.2s ease-in;
+		display: inline-flex;
+	}
+}
+
+.text_button {
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
+	cursor: pointer;
+	transition: color 0.2s ease-in;
+
+	i {
+		transition: color 0.2s ease-in;
+		display: inline-flex;
+	}
+}
+
+.text_button:hover,
+.icon_button:hover,
+.icon_button.selected,
+.text_button.selected,
+.icon_button.active,
+.text_button.active {
+	color: var(--color-main);
+
+	i {
+		color: var(--color-main);
+	}
+}

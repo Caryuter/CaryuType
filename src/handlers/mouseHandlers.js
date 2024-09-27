@@ -1,11 +1,11 @@
-export {onMouseMove}
-import { gameHasStarted, pauseGame} from "../components/gameLogic.js";
+export { onMouseMove };
+import { gameHasStarted, pauseGame } from "../components/gameLogic.js";
 
 /**
- * @param {MouseEvent} event 
+ * @param {MouseEvent} event
  */
-function onMouseMove(event){
-    if(gameHasStarted()){
-        pauseGame()
-    }
+function onMouseMove(event) {
+	if (gameHasStarted()) {
+		pauseGame();
+	}
 }

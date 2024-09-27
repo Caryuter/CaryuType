@@ -1,0 +1,31 @@
+/* || BASE STYLES || */
+
+@import url("./base/variables.css");
+@import url("./base/reset.css");
+@import url("./base/base.css");
+
+/* || LAYOUT STYLES || */
+
+@import url("./layout/page.css");
+@import url("./layout/header.css");
+@import url("./layout/footer.css");
+
+/* || PAGES STYLES || */
+
+@import url("./pages/type-challenge.css");
+@import url("./pages/results.css");
+
+/* || COMPONENTS STYLES || */
+
+@import url("./components/button.css");
+@import url("./components/caret.css");
+@import url("./components/footer-links.css");
+@import url("./components/home-logo.css");
+@import url("./components/keytips.css");
+@import url("./components/options-menu.css");
+@import url("./components/topbar.css");
+@import url("./components/words-container.css");
+
+/* || THEME STYLES || */
+
+@import url("./themes/mobile.css");
