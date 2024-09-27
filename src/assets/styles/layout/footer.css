@@ -1,0 +1,10 @@
+footer {
+  font-size: var(--font-size-normal);
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: end;
+  gap: 1.5rem;
+  padding: 1.5rem 3rem;
+}

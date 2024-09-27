@@ -1,0 +1,28 @@
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.caret {
+  height: 1.5em;
+  width: 4px;
+  border-radius: 5px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--color-secondary);
+  opacity: 1;
+  animation: blink 1s step-end infinite;
+  transition:
+    top 0.1s ease-in-out,
+    left 0.1s ease-in-out;
+}

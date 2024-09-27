@@ -1,3 +1,5 @@
+#Dist directory
+.dist/
 
 #Dependencias de Node
 node_modules/
@@ -7,3 +9,6 @@ node_modules/
 
 #git repository
 .git
+
+#Build cache
+.cache
