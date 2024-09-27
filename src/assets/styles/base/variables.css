@@ -1,17 +1,17 @@
 :root {
-  --color-bg: #2f3338;
-  --color-bg-secondary: rgb(58 60 61);
-  --color-main: rgb(214, 210 188);
-  --color-main-dark: rgb(143 142 132);
-  --color-secondary: rgb(211 176 0);
-  --color-wrong: rgb(255 74 89);
-  --color-wrong-extra: rgb(196 60 83);
-  --color-correct: rgb(214 210 188);
-  --font-family-primary: "Roboto Mono", monospace;
-  --font-family-secondary: "Lexend Deca", sans-serif;
-  --font-size-bigger: 2rem;
-  --font-size-big: 1.5rem;
-  --font-size-medium: 1rem;
-  --font-size-normal: 0.8rem;
-  --font-size-small: 0.65rem;
+	--color-bg: #2f3338;
+	--color-bg-secondary: rgb(58 60 61);
+	--color-main: rgb(214 210 188);
+	--color-main-dark: rgb(143 142 132);
+	--color-secondary: rgb(211 176 0);
+	--color-wrong: rgb(255 74 89);
+	--color-wrong-extra: rgb(196 60 83);
+	--color-correct: rgb(214 210 188);
+	--font-family-primary: "Roboto Mono", monospace;
+	--font-family-secondary: "Lexend Deca", sans-serif;
+	--font-size-bigger: 2rem;
+	--font-size-big: 1.5rem;
+	--font-size-medium: 1rem;
+	--font-size-normal: 0.8rem;
+	--font-size-small: 0.65rem;
 }

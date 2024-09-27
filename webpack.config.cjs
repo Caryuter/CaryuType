@@ -2,7 +2,6 @@ const path = require("path");
 const htmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
-const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 const cssRule = {
 	test: /\.css$/i,
@@ -67,13 +66,12 @@ module.exports = (env, argv) => {
 		module: {
 			rules: [cssRule, javascriptRule, mediaRule, htmlRule],
 		},
-		...(!isProductionMode && { devtool: "eval-cheap-module-source-map" }),
+		...(!isProductionMode && { devtool: "eval-source-map" }),
 		devServer: {
 			static: "./.dist",
 			watchFiles: ["src/**/*"], // to detect changes on all files inside src directory
 		},
 		plugins: [
-			new BundleAnalyzerPlugin(),
 			new htmlWebpackPlugin({
 				template: "./src/index.html",
 				filename: isProductionMode ? "index.[contenthash].html" : "index.html",
