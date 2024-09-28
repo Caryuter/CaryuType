@@ -1,0 +1,29 @@
+.heatmap_legend dt {
+	padding-inline: 0.5rem;
+	color: var(--color-bg);
+	font-size: var(--font-size-normal);
+}
+
+.heatmap_slower {
+	background-color: rgb(202 71 84);
+	border-top-left-radius: 1rem;
+	border-bottom-left-radius: 1rem;
+}
+
+.heatmap_slow {
+	background-color: rgb(206 140 141);
+}
+
+.heatmap_optimum {
+	background-color: rgb(209 208 197);
+}
+
+.heatmap_fast {
+	background-color: rgb(218 196 109);
+}
+
+.heatmap_faster {
+	background-color: rgb(226 183 20);
+	border-top-right-radius: 1rem;
+	border-bottom-right-radius: 1rem;
+}

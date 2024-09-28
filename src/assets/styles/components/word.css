@@ -1,0 +1,21 @@
+word {
+	display: inline-block;
+	margin: 0.5rem;
+	border-bottom: 2px solid transparent;
+
+	&.marked {
+		border-bottom-color: red;
+	}
+}
+
+letter {
+	position: relative;
+
+	&.correct {
+		color: var(--color-correct);
+	}
+
+	&.incorrect {
+		color: var(--color-wrong);
+	}
+}

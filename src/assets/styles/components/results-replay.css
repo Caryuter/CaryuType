@@ -1,0 +1,41 @@
+.results_replay {
+	/* TODO: Style */
+	grid-column: 1 / 3;
+	cursor: default;
+
+	&[hidden] {
+		display: none;
+	}
+}
+
+.replay_title {
+	display: flex;
+	column-gap: 0.5rem;
+	color: var(--color-main-dark);
+}
+
+.replay_controls {
+	padding: 0.25rem;
+	font-size: var(--font-size-medium);
+	position: relative;
+
+	& [hidden] {
+		display: none;
+	}
+}
+
+.replay_info {
+	color: var(--color-secondary);
+	font-weight: 400;
+}
+
+.replay_words {
+	word {
+		display: inline-block;
+		margin-block: 0.2rem;
+		margin-right: 0.5rem;
+		margin-left: 0;
+		color: var(--color-main-dark);
+		cursor: pointer;
+	}
+}

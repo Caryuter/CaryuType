@@ -17,14 +17,21 @@
 
 /* || COMPONENTS STYLES || */
 
+@import url("components/word.css");
 @import url("./components/button.css");
+@import url("components/tooltip.css");
 @import url("./components/caret.css");
 @import url("./components/footer-links.css");
 @import url("./components/home-logo.css");
 @import url("./components/keytips.css");
 @import url("./components/options-menu.css");
 @import url("./components/topbar.css");
-@import url("./components/words-container.css");
+@import url("components/stat.css");
+@import url("components/chart.css");
+@import url("components/heatmap.css");
+@import url("components/results-actions.css");
+@import url("components/results-history.css");
+@import url("components/results-replay.css");
 
 /* || THEME STYLES || */
 

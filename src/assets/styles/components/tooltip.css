@@ -1,0 +1,131 @@
+@property --offset {
+	syntax: "<length>";
+	initial-value: 0;
+	inherits: false;
+}
+
+@keyframes show {
+	0% {
+		--offset: 0rem;
+
+		opacity: 0;
+	}
+
+	100% {
+		--offset: 0.5rem;
+
+		opacity: 1;
+		visibility: visible;
+	}
+}
+
+@keyframes hide {
+	0% {
+		--offset: 0.5rem;
+
+		opacity: 1;
+	}
+
+	100% {
+		--offset: 0rem;
+
+		opacity: 0;
+		visibility: hidden;
+	}
+}
+
+.tooltip {
+	display: block;
+	font-size: var(--font-size-medium);
+	z-index: 10;
+	background-color: var(--color-tooltip);
+	color: var(--color-tooltip-text);
+	text-wrap: nowrap;
+	width: fit-content;
+	padding: 0.6rem 1.1rem;
+	position: absolute;
+	margin-inline: auto;
+	opacity: 0;
+
+	&::before {
+		--width: 0.5rem;
+
+		z-index: 1;
+		content: "";
+		position: absolute;
+		width: var(--width);
+		height: var(--width);
+		background-color: var(--color-tooltip);
+		transform: rotate(45deg);
+	}
+
+	&::after {
+		--border-thickness: 0.1rem;
+
+		z-index: 2;
+		content: "";
+		position: absolute;
+		width: calc(100% - var(--border-thickness));
+		height: calc(100% - var(--border-thickness));
+		border: var(--border-thickness) solid var(--color-bg);
+		top: calc(var(--border-thickness) * -1 / 2);
+		left: calc(var(--border-thickness) * -1 / 2);
+	}
+
+	&[data-position="bottom"] {
+		top: calc(100% + var(--offset));
+		left: 50%;
+		transform: translate(-50% 0);
+
+		&::before {
+			bottom: calc(100% - var(--width) / 2);
+			left: calc(50% - var(--width) / 2);
+		}
+	}
+
+	&[data-position="top"] {
+		bottom: calc(100% + var(--offset));
+		left: 50%;
+		transform: translate(-50% 0);
+
+		&::before {
+			top: calc(100% - var(--width) / 2);
+			left: calc(50% - var(--width) / 2);
+		}
+	}
+
+	&[data-position="left"] {
+		left: -2rem;
+		top: 50%;
+		transform: translate(0 -50%);
+
+		&::before {
+			left: calc(100% - var(--width) / 2);
+			top: calc(50% - var(--width) / 2);
+		}
+
+		&::after {
+			right: 100%;
+			top: 0;
+		}
+	}
+
+	&[data-position="right"] {
+		right: calc(-100% - 2rem);
+		top: 50%;
+		transform: translate(0 -50%);
+
+		&::before {
+			right: calc(100% - var(--width) / 2);
+			top: calc(50% - var(--width) / 2);
+		}
+	}
+}
+
+.tooltip.show {
+	animation: 0.2s ease-in-out 1 forwards show;
+}
+
+.tooltip:not(.show) {
+	animation: 0.2s ease-in-out 1 forwards hide;
+}

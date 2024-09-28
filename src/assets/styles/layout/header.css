@@ -1,6 +1,6 @@
 body > header {
-  padding: 2rem 3rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+	padding: 2rem 3rem 1rem;
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
 }

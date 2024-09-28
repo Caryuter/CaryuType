@@ -1,0 +1,51 @@
+.stat {
+	line-height: 1;
+	cursor: default;
+}
+
+.stat_data {
+	color: var(--color-secondary);
+	font-size: var(--font-size-medium);
+	font-weight: normal;
+	position: relative;
+}
+
+.stat_data:has(.tooltip),
+.stat_data_container:has(.tooltip) {
+	cursor: pointer;
+}
+
+.stat_title {
+	color: var(--color-main-dark);
+	font-size: var(--font-size-medium);
+	text-decoration: none;
+	font-weight: normal;
+	margin-bottom: 0.25rem;
+}
+
+.main_stats {
+	& .stat_title {
+		font-size: var(--font-size-bigger);
+		line-height: 0.75;
+	}
+
+	& .stat_data {
+		font-size: var(--font-size-biggest);
+	}
+}
+
+.more_stats > .stat:not(.stat.other, .stat.test_type) {
+	& .stat_data {
+		font-size: var(--font-size-bigger);
+	}
+}
+
+.stat.time .stat_data_container {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+
+	& .stat_side_data {
+		font-size: var(--font-size-normal);
+	}
+}

@@ -1,0 +1,12 @@
+.result_actions {
+	display: flex;
+	gap: 1rem;
+	font-size: 0;
+	margin-bottom: 1.25rem;
+
+	& .text_button {
+		font-size: var(--font-size-medium);
+		padding: 1rem 2rem;
+		position: relative;
+	}
+}

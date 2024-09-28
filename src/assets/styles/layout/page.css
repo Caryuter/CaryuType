@@ -1,17 +1,18 @@
 body {
-  max-width: 1450px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 2rem;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+	max-width: 1450px;
+	width: 100%;
+	margin: 0 auto;
+	padding: 0 2rem;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+
+	& ::selection {
+		background-color: var(--color-secondary);
+		color: var(--color-bg);
+	}
 }
 
 .not-focused {
-  opacity: 0;
-}
-
-body > * {
-  border: 2px solid rgb(95 53 210);
+	opacity: 0;
 }

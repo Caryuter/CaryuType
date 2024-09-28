@@ -67,6 +67,11 @@ em {
 	color: inherit;
 }
 
+abbr {
+	inherits: true;
+	text-decoration: none;
+}
+
 /* Evitamos problemas con los pseudoelementos de quotes */
 blockquote::before,
 blockquote::after,

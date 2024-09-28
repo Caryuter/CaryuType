@@ -1,56 +1,57 @@
 .options {
-  --options-gap: 2rem;
-  --width-transition-duration: 0.2s;
-  --opacity-transition-duration: 0.1s;
+	--options-gap: 2rem;
+	--width-transition-duration: 0.2s;
+	--opacity-transition-duration: 0.1s;
 
-  display: flex;
-  align-self: center;
-  align-items: center;
-  justify-content: center;
-  height: 2.5rem;
-  width: fit-content;
-  background-color: var(--color-bg-secondary);
-  border-radius: 0.5rem;
-  padding: 0 1.2rem;
+	display: flex;
+	align-self: center;
+	align-items: center;
+	justify-content: center;
+	height: 2.5rem;
+	width: fit-content;
+	background-color: var(--color-bg-secondary);
+	border-radius: 0.5rem;
+	padding: 0 1.2rem;
+	visibility: hidden;
 
-  menu {
-    text-wrap: nowrap;
-    display: flex;
-    position: relative;
-    overflow: hidden;
-    transition-property: opacity, width;
-    transition-duration: var(--opacity-transition-duration),
-      var(--width-transition-duration);
-    transition-timing-function: linear, ease-in-out;
+	menu {
+		text-wrap: nowrap;
+		display: flex;
+		position: relative;
+		overflow: hidden;
+		transition-property: opacity, width;
+		transition-duration: var(--opacity-transition-duration),
+			var(--width-transition-duration);
+		transition-timing-function: linear, ease-in-out;
 
-    button,
-    a {
-      padding: 0.8rem 0.7rem;
-      font-size: var(--font-size-normal);
-    }
+		button,
+		a {
+			padding: 0.8rem 0.7rem;
+			font-size: var(--font-size-normal);
+		}
 
-    &[hidden] {
-      opacity: 0;
-      width: 0;
-    }
-  }
+		&[hidden] {
+			opacity: 0;
+			width: 0;
+		}
+	}
 }
 
 .spacer {
-  display: block;
-  width: 7px;
-  height: 55%;
-  background-color: var(--color-bg);
-  border-radius: 1rem;
-  margin: 0 10px;
-  transition:
-    width var(--width-transition-duration) ease-in-out
-      var(--opacity-transition-duration),
-    margin var(--width-transition-duration) ease-in-out
-      var(--opacity-transition-duration);
+	display: block;
+	width: 7px;
+	height: 55%;
+	background-color: var(--color-bg);
+	border-radius: 1rem;
+	margin: 0 10px;
+	transition:
+		width var(--width-transition-duration) ease-in-out
+			var(--opacity-transition-duration),
+		margin var(--width-transition-duration) ease-in-out
+			var(--opacity-transition-duration);
 
-  &[hidden] {
-    width: 0;
-    margin: 0;
-  }
+	&[hidden] {
+		width: 0;
+		margin: 0;
+	}
 }

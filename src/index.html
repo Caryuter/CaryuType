@@ -180,8 +180,7 @@
 				</section>
 				<button type="reset" class="reset">
 					<i class="fi fi-br-rotate-right"></i>
-					<!-- TODO: Tooltip -->
-					<span class="tooltip"></span>
+					<span class="tooltip" data-position="bottom">Restart Test</span>
 				</button>
 			</section>
 			<section id="results">
@@ -193,7 +192,7 @@
 							</h2>
 							<strong class="stat_data">
 								<data class="stat_wpm" value="96">96</data>
-								<span class="tooltip">
+								<span class="tooltip" data-position="top">
 									<data class="stat_exact_wpm" value="86.22"
 										>86.22 <abbr title="Words per minute">wpm</abbr></data
 									>
@@ -204,7 +203,7 @@
 							<h2 class="stat_title"><abbr title="accuracy">acc</abbr></h2>
 							<strong class="stat_data">
 								<data class="stat_accuracy" value="100">100%</data>
-								<span class="tooltip">
+								<span class="tooltip" data-position="top">
 									<data class="stat_exact_accuracy" value="93.33">93.33%</data>
 									(<data class="stat_accuracy_correct" value="42"
 										>42 correct</data
@@ -235,7 +234,7 @@
 							<h3 class="stat_title">raw</h3>
 							<strong class="stat_data">
 								<data class="stat_raw_wpm" value="68">68</data>
-								<span class="tooltip">
+								<span class="tooltip" data-position="top">
 									<data class="stat_exact_raw_wpm" value="66.77"
 										>66.77 <abbr title="Words per minute">wpm</abbr></data
 									>
@@ -246,22 +245,26 @@
 							<h3 class="stat_title">characters</h3>
 							<strong class="stat_data">
 								<data class="stat_characters" value="[8,0,0,0]">
-									<data class="stat_correct_characters" value="8">8</data>
-									|
-									<data class="stat_incorrect_characters" value="0">0</data>
-									|
-									<data class="stat_extra_characters" value="0">0</data>
-									|
-									<data class="stat_missed_characters" value="0">0</data>
+									<data class="stat_correct_characters" value="8">8</data>/<data
+										class="stat_incorrect_characters"
+										value="0"
+										>0</data
+									>/<data class="stat_extra_characters" value="0">0</data>/<data
+										class="stat_missed_characters"
+										value="0"
+										>0</data
+									>
 								</data>
-								<span class="tooltip">correct|incorrect|extra|missed</span>
+								<span class="tooltip" data-position="top"
+									>correct|incorrect|extra|missed</span
+								>
 							</strong>
 						</li>
 						<li class="stat consistency">
 							<h3 class="stat_title">consistency</h3>
 							<strong class="stat_data">
 								<data class="stat_consistency" value="81">81%</data>
-								<span class="tooltip">
+								<span class="tooltip" data-position="top">
 									<data class="stat_exact_consistency" value="80.37"
 										>81.37%</data
 									>
@@ -285,7 +288,7 @@
 										session
 									</data>
 								</small>
-								<span class="tooltip">
+								<span class="tooltip" data-position="top">
 									<time datetime="PT3.83S" class="stat_exact_session_time"
 										>3.83s</time
 									>
@@ -303,7 +306,9 @@
 								<li>
 									<button class="copy_text">
 										<i class="fi fi-br-copy-alt" aria-hidden="true"></i>
-										<span class="tooltip">Copy words list</span>
+										<span class="tooltip" data-position="top"
+											>Copy words list</span
+										>
 									</button>
 								</li>
 								<li>
@@ -311,13 +316,17 @@
 										<i
 											class="fi fi-br-document-circle-wrong"
 											aria-hidden="true"></i>
-										<span class="tooltip">Coppy missed words list</span>
+										<span class="tooltip" data-position="top"
+											>Coppy missed words list</span
+										>
 									</button>
 								</li>
 								<li>
 									<button class="toggle_heatmap">
 										<i class="fi fi-br-flame" aria-hidden="true"></i>
-										<span class="tooltip">Toggle burst heatmap</span>
+										<span class="tooltip" data-position="top"
+											>Toggle burst heatmap</span
+										>
 									</button>
 								</li>
 							</menu>
@@ -351,7 +360,19 @@
 								</dt>
 							</dl>
 						</div>
-						<p class="history_words"></p>
+						<output class="history_words">
+							<word
+								>hello
+								<div class="highlight">
+									<span class="highlight_word">h0lle</span><br /><data
+										value="101"
+										class="highlight_wpm"
+										>101</data
+									>
+									wpm
+								</div></word
+							>
+						</output>
 					</aside>
 					<aside class="results_replay">
 						<div class="replay_title">
@@ -359,7 +380,7 @@
 							<button class="replay_controls">
 								<i class="play_icon fi fi-sr-play"></i>
 								<i class="pause_icon fi fi-sr-pause" hidden></i>
-								<span class="tooltip">Resume replay</span>
+								<span class="tooltip" data-position="top">Resume replay</span>
 							</button>
 							<strong class="replay_info">
 								<data class="replay_wpm" value="0"
@@ -368,48 +389,56 @@
 								<time class="replay_time" datetime="PT0H0M2S">2s</time>
 							</strong>
 						</div>
-						<p class="replay_words"></p>
+						<output class="replay_words">
+							<word>hello</word>
+						</output>
 					</aside>
 				</article>
 				<menu class="result_actions">
 					<li>
 						<button class="next_test">
 							<i class="fi fi-br-angle-small-right" aria-hidden="true"></i>
-							<span class="tooltip">Next test</span>
+							<span class="tooltip" data-position="bottom">Next test</span>
 						</button>
 					</li>
 					<li>
 						<button class="repeat_test">
 							<i class="fi fi-br-refresh" aria-hidden="true"></i>
-							<span class="tooltip">Repeat Test</span>
+							<span class="tooltip" data-position="bottom">Repeat Test</span>
 						</button>
 					</li>
 					<li>
 						<button class="practice_words">
-							<span class="tooltip">Practice words</span>
+							<i class="fi fi-sr-edit" aria-hidden="true"></i>
+							<span class="tooltip" data-position="bottom">Practice words</span>
 						</button>
 					</li>
 					<li>
 						<button class="words_history">
 							<i class="fi fi-br-align-left" aria-hidden="true"></i>
-							<span class="tooltip">Toggle words history</span>
+							<span class="tooltip" data-position="bottom"
+								>Toggle words history</span
+							>
 						</button>
 					</li>
 					<li>
 						<button class="replay">
 							<i class="fi fi-ss-rewind" aria-hidden="true"></i>
-							<span class="tooltip">Watch replay</span>
+							<span class="tooltip" data-position="bottom">Watch replay</span>
 						</button>
 					</li>
 					<li>
 						<button class="screenshot">
 							<i class="fi fi-br-picture" aria-hidden="true"></i>
-							<span class="tooltip">Copy screenshot to clipboard</span>
+							<span class="tooltip" data-position="bottom"
+								>Copy screenshot to clipboard</span
+							>
 						</button>
 					</li>
 				</menu>
 				<small class="sign_in"
-					><a href="#login">Sign in</a> to save your result</small
+					><a href="#login" class="text_button">Sign in</a> to save your
+					result</small
 				>
 			</section>
 		</main>

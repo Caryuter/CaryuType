@@ -1,0 +1,76 @@
+.results_history {
+	/* TODO:style */
+	grid-column: 1/3;
+	cursor: default;
+
+	&[hidden] {
+		display: none;
+	}
+}
+
+.history_title,
+.history_actions,
+.heatmap_legend {
+	display: flex;
+	align-items: center;
+}
+
+.history_title {
+	column-gap: 0.5rem;
+	color: var(--color-main-dark);
+}
+
+.history_actions {
+	& button {
+		font-size: var(--font-size-medium);
+		display: inline-block;
+		align-items: center;
+		justify-content: center;
+		padding-inline: 0.25rem;
+		position: relative;
+
+		& i {
+			margin-top: 25%;
+		}
+	}
+}
+
+.highlight {
+	--padding: 0.5rem;
+
+	display: none;
+	position: absolute;
+	cursor: none;
+	text-wrap: nowrap;
+	top: calc(var(--padding) * -1);
+	left: calc(var(--padding) * -1);
+	background-color: var(--color-main-dark);
+	font-size: var(--font-size-small);
+	color: var(--color-bg);
+	padding: var(--padding);
+	border-radius: 1em;
+}
+
+.history_words {
+	word {
+		display: inline-block;
+		margin-block: 0.2rem;
+		margin-right: 0.5rem;
+		margin-left: 0;
+		color: var(--color-main-dark);
+		position: relative;
+
+		&:hover {
+			cursor: none;
+
+			& .highlight {
+				display: block;
+			}
+		}
+	}
+}
+
+.highlight_word {
+	font-size: var(--font-size-medium);
+	color: var(--color-bg);
+}
